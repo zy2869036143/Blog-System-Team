@@ -19,4 +19,11 @@ export default {
   width: 100%;
   height: 100%;
 }
+.icon {
+  width: 1px;
+  height: 1px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 </style>

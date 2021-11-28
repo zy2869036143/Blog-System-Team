@@ -1,18 +1,28 @@
 <template>
 
-  <el-container>
+  <el-container style="height: 100%">
     <el-header >
-      <el-menu :default-active="$route.path" style="width: 100%" mode="horizontal" @select="handleSelect" router>
-        <el-menu-item v-for="item in items"
+      <el-menu :default-active="$route.path" style="width: 100%" mode="horizontal"  router>
+        <el-submenu v-for="item in subItem"
                       :key="item.id"
                       :index="item.url"
                       :route="{path: item.url, query: {data: item.data}}"
         >
           <template slot="title">
-            <i class="el-icon-document-copy"></i>
+            <i :class="item.icon"></i>
             <span>{{ item.id }}</span>
           </template>
-        </el-menu-item>
+          <el-menu-item v-for="sub in item.subs"
+                        :key="sub.id"
+                        :index="sub.url"
+                        :route="{path: sub.url, query: {data: sub.data}}"
+          >
+            <template slot="title">
+              <i :class="sub.icon"></i>
+              <span>{{ sub.id }}</span>
+            </template>
+          </el-menu-item>
+        </el-submenu>
 
           <el-input placeholder="请输入搜索内容" v-model="search" style="width: 45%;margin-top: 10px;margin-left: 10px">
             <el-select v-model="select" slot="prepend" placeholder="请选择">
@@ -22,7 +32,7 @@
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
 
-        <el-dropdown  @command="handleCommand">
+        <el-dropdown>
       <span class="el-dropdown-link">
         <div style="text-align: center">
           <el-avatar :size="25" :src="circleUrl" style="float: left; position: center"></el-avatar>
@@ -33,15 +43,15 @@
 
       </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-edit"  command="a" @click.native="dialogVisible=true">个人博客主页</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit"  command="b" @click.native="dialogVisible=true">个人信息维护</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-check" command="c" @click.native="$router.push('/login')">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-24gf-playlistHeart2"  command="a" @click.native="dialogVisible=true">我的收藏</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-gerenziliao"  command="b" @click.native="$router.push('/info')">个人资料</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="$router.push('/login')">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-menu>
 
     </el-header>
-    <el-main>Main</el-main>
+    <el-main><router-view></router-view></el-main>
   </el-container>
 </template>
 <style>
@@ -69,30 +79,53 @@
 export default {
   data(){
     return{
-      items:[],
+      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      subItem:[],
       select:'1',
       search:'',
     }
   },
   created() {
-    this.items = [
+
+    this.subItem=[
       {
-        url:"/blogs",
+        url:"/mainBlogPage/allBlogs",
+        icon:"el-icon-s-grid",
         data:{
-          teacherName:this.name,
-          teacherAccount:this.account,
         },
-        id: "博客主页"
+        id: "全部博客",
+        subs:[
+          {url:"/mainBlogPage/allBlogs",
+            data:{
+            },
+            id:"全部",
+            icon:"el-icon-quanbu"
+          }
+        ],
       },
       {
-        url:"/ownBlogs",
+        url:"/mainBlogPage/ownBlogs",
         data:{
-          teacherName:this.name,
-          teacherAccount:this.account,
         },
-        id: "个人博客主页"
+        id: "你的博客",
+        icon:"el-icon-notebook-1",
+        subs:[
+          {
+            url:"/mainBlogPage/ownBlogs",
+            data:{
+            },
+            id: "你的博客列表",
+            icon:"el-icon-liebiao",
+          },
+          {
+          url:"/editBlogs",
+          data:{
+          },
+          id: "写博客",
+            icon:"el-icon-circle-plus-outline"
+        }]
       },
-    ];
+    ]
   }
 }
 </script>

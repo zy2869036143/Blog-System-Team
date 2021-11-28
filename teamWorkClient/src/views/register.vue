@@ -95,6 +95,8 @@
 }
 </style>
 <script>
+import request from "../util/request";
+
 export default {
   data() {
     return {
@@ -116,7 +118,7 @@ export default {
       if(this.form.account === ''){
         await this.$message({
           type: "error",
-          message: "账号号不能为空"
+          message: "账号不能为空"
         })
         flag = false;
       }
@@ -141,13 +143,6 @@ export default {
         })
         flag = false;
       }
-      if(this.identification === ''){
-        await this.$message({
-          type: "error",
-          message: "请选择身份"
-        })
-        flag = false;
-      }
       if(this.form.password !== this.checkPwd && this.form.password !==''){
         await this.$message({
           type: "error",
@@ -155,7 +150,6 @@ export default {
         })
         flag = false;
       }
-
     }
   }
 }

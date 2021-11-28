@@ -115,7 +115,7 @@ export default {
   },
   methods:{
     login(){
-      this.$router.push("/mainBlogPage");
+      this.$router.push("/mainBlogPage/allBlogs");
     }
   }
 }
