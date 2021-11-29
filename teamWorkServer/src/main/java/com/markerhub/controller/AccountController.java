@@ -4,8 +4,11 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.markerhub.common.dto.LoginDto;
+import com.markerhub.common.dto.Username;
 import com.markerhub.common.lang.Result;
+import com.markerhub.entity.Blog;
 import com.markerhub.entity.User;
+import com.markerhub.service.BlogService;
 import com.markerhub.service.UserService;
 import com.markerhub.util.JwtUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class AccountController {
@@ -28,6 +33,9 @@ public class AccountController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    BlogService blogService;
 
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDto loginDto, HttpServletResponse response) {
@@ -52,6 +60,23 @@ public class AccountController {
         );
     }
 
+    @PostMapping("/register")
+    public Result register(@Validated @RequestBody User user) {
+        User currentuser = userService.getOne(new QueryWrapper<User>().eq("username", user.getUsername()));
+        if (currentuser != null) {
+            return Result.fail("user name already taken!");
+        }
+        user.setPassword(SecureUtil.md5(user.getPassword()));
+        user.setStatus(0);
+        userService.save(user);
+        Date date = new Date();
+        System.out.println(date.getTime());
+        return Result.succ(MapUtil.builder()
+                .put("message", "success")
+                .map()
+        );
+    }
+
     @RequiresAuthentication
     @GetMapping("/logout")
     public Result logout() {
@@ -59,4 +84,16 @@ public class AccountController {
         return Result.succ(null);
     }
 
+    @PostMapping("/search")
+    public  Result search(@Validated @RequestBody Username username){
+        User user =  userService.getOne(new QueryWrapper<User>().eq("username", username.getUsername()));
+        try {
+            Assert.notNull(user, "用户不存在");
+            List<Blog> blogs = blogService.list(new QueryWrapper<Blog>().eq("user_id",user.getId()));
+            return Result.succ(blogs);
+        }catch (IllegalArgumentException e){
+
+        }
+        return  Result.fail("failed");
+    }
 }

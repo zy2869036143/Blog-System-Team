@@ -24,9 +24,6 @@ import java.util.stream.Collectors;
  * <p>
  *  前端控制器
  * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 @RestController
 public class BlogController {
@@ -57,26 +54,24 @@ public class BlogController {
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody Blog blog) {
 
-//        Assert.isTrue(false, "公开版不能任意编辑！");
-
         Blog temp = null;
         if(blog.getId() != null) {
             temp = blogService.getById(blog.getId());
-            // 只能编辑自己的文章
-            System.out.println(ShiroUtil.getProfile().getId());
-            Assert.isTrue(temp.getUserId().longValue() == ShiroUtil.getProfile().getId().longValue(), "没有权限编辑");
-
+            if (temp.getUserId()!=blog.getUserId()){
+                return Result.fail("Can only edit your own blog!");
+            }
         } else {
-
             temp = new Blog();
-            temp.setUserId(ShiroUtil.getProfile().getId());
-            temp.setCreated(LocalDateTime.now());
-            temp.setStatus(0);
+            temp.setUserId(blog.getUserId());
         }
+        temp.setContent(blog.getContent());
+        temp.setDescription(blog.getDescription());
+        temp.setTitle(blog.getTitle());
+        temp.setCreated(LocalDateTime.now());
+        temp.setStatus(0);
 
         BeanUtil.copyProperties(blog, temp, "id", "userId", "created", "status");
         blogService.saveOrUpdate(temp);
-
         return Result.succ(null);
     }
 
