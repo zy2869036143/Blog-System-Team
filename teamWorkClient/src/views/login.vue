@@ -5,9 +5,8 @@
         <!-- 登录表单区域 -->
         <el-form size="mini" v-model="form" label='登录你的博客'>
           <p class="title">登录你的博客</p>
-          <!-- 用户名 -->
           <el-form-item>
-            <el-input placeholder="账号" v-model="form.account" prefix-icon="el-icon-user" size="medium"></el-input>
+            <el-input placeholder="昵称" v-model="form.username" prefix-icon="el-icon-user" size="medium"></el-input>
           </el-form-item>
           <!-- 密码 -->
           <el-form-item >
@@ -101,12 +100,14 @@
 }
 </style>
 <script>
+import request from "../util/request";
+
 export default {
   data() {
     return {
       identification: '',
       form: {
-        account:'',
+        username:'',
         name: '',
         password: '',
         ifRemember: false
@@ -114,8 +115,39 @@ export default {
     }
   },
   methods:{
-    login(){
-      this.$router.push("/mainBlogPage/allBlogs");
+    async login(){
+      let flag = true;
+      if(this.form.username === ''){
+        await this.$message({
+          type: "error",
+          message: "昵称不能为空"
+        })
+        flag = false;
+      }
+      if(this.form.password === ''){
+        await this.$message({
+          type: "error",
+          message: "密码不能为空"
+        })
+        flag = false;
+      }
+      request.post("http://localhost:8081/login",this.form).then(res=>{
+        if(res.code === 200){
+          this.$message({
+            type:"success",
+            message:"登录成功"
+          })
+          let user = res.data;
+          this.$router.push({
+            path:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(user))}`,
+          })
+        }else{
+          this.$message({
+            type:"error",
+            message:res.msg,
+          })
+        }
+      })
     }
   }
 }

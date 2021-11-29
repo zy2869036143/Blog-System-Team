@@ -2,16 +2,16 @@
   <div>
     <div v-for="(blog,index) in blogs">
       <el-card style="margin-bottom: 10px" shadow="hover" @click.native="$router.push({path:'/blogDetails', query: {blogId: blog.id}})">
-          <h1>{{blog.title}}</h1>
-          <h6>{{blog.created}}</h6>
+        <h1>{{blog.title}}</h1>
+        <h6>{{blog.created}}</h6>
         <p>{{blog.description}}</p>
         <el-button circle v-if="!ifLike[index]" icon="el-icon-icon" @click.native="like($event,index)" size="mini">
 
         </el-button>
         <el-button circle v-if="ifLike[index]" type="primary" icon="el-icon-icon-copy" @click.native="like($event,index)" size="mini">
-<!--          <svg class="svg" aria-hidden="true">-->
-<!--            <use xlink:href="#el-icon-icon-copy"></use>-->
-<!--          </svg>-->
+          <!--          <svg class="svg" aria-hidden="true">-->
+          <!--            <use xlink:href="#el-icon-icon-copy"></use>-->
+          <!--          </svg>-->
         </el-button>
         <el-button circle v-if="!ifFavourite[index]" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>
         <el-button circle v-if="ifFavourite[index]" type="warning" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>
@@ -20,14 +20,14 @@
     </div>
 
 
-    <el-pagination class="mpage"
-                   background
-                   layout="prev, pager, next"
-                   :current-page="currentPage"
-                   :page-size="pageSize"
-                   :total="total"
-                   @current-change=page>
-    </el-pagination>
+<!--    <el-pagination class="mpage"-->
+<!--                   background-->
+<!--                   layout="prev, pager, next"-->
+<!--                   :current-page="currentPage"-->
+<!--                   :page-size="pageSize"-->
+<!--                   :total="total"-->
+<!--                   @current-change=page>-->
+<!--    </el-pagination>-->
   </div>
 
 </template>
@@ -77,28 +77,22 @@ export default {
   },
 
   created() {
-    this.page(1)
+    this.load()
+  },
+  mounted() {
+    this.load()
+  },
+  watch:{
+    $route(to,from){
+      this.blogs = JSON.parse(decodeURIComponent(this.$route.params.blogs));
+      console.log(this.blogs)
+    }
   },
   methods: {
-    page(currentPage) {
-      console.log(currentPage)
-      let getData = {
-        currentPage: currentPage,
-      }
-      request.post("http://localhost:8081/blogs",getData).then(res => {
-
-        console.log(res)
-        this.blogs = res.data.records
-        console.log(this.blogs)
-        this.currentPage = res.data.current
-        this.total = res.data.total
-        this.pageSize = res.data.size
-        for(let i = 0;i<this.blogs.length;i++){
-          this.ifLike[i] = false;
-          this.ifFavourite[i] = false;
-        }
-
-      })
+    load(){
+      this.blogs = JSON.parse(decodeURIComponent(this.$route.params.blogs));
+      this.$forceUpdate();
+      console.log(this.blogs)
     },
     like(e,index) {
       e.stopPropagation();

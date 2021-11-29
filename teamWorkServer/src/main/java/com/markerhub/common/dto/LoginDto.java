@@ -14,6 +14,6 @@ public class LoginDto implements Serializable {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    @NotBlank(message = "新密码不能为空")
+//    @NotBlank(message = "新密码不能为空")
     private String newpassword;
 }

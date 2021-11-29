@@ -4,7 +4,7 @@
       <h2> {{ blog.title }}</h2>
       <el-button type="primary" icon="el-icon-edit" plain v-if="ownBlog"
                  size="mini"
-                 @click="$router.push({path: '/editBlogs', params: {blogId: blog.id}})">
+                 @click="$router.push({path: '/editBlogs', query: {blogId: blog.id}})">
         编辑
       </el-button>
       <el-divider></el-divider>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+
+import request from "../util/request";
 
 export default {
   data() {
@@ -89,7 +91,22 @@ export default {
       target.blur();
     },
   },
-  created() {}
+  created() {
+    let blogId = this.$route.query.blogId
+    let url = 'http://localhost:8081/blog/'+blogId
+    request.get(url).then(res=>{
+      const blog = res.data
+      this.blog.id = blog.id
+      this.blog.title = blog.title
+
+      var MardownIt = require("markdown-it")
+      var md = new MardownIt()
+
+      var result = md.render(blog.content)
+      this.blog.content = result
+      // this.ownBlog = (blog.userId === this.$store.getters.getUser.id)
+    })
+  }
 }
 </script>
 

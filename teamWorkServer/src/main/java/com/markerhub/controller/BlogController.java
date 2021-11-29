@@ -75,8 +75,8 @@ public class BlogController {
         return Result.succ(null);
     }
 
-    @GetMapping("/blog/selectByKey")
-    public Result getblogByKey( String key){
+    @PostMapping("/blog/selectByKey")
+    public Result getblogByKey(@RequestBody String key){
         List<Blog> blogs = blogService.getblogs();
         List<Blog> filter = blogs.stream().filter(item ->{
             return item.getContent().contains(key);

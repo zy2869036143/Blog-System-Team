@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import request from "../util/request";
+
 export default {
   data() {
     return {
@@ -55,12 +57,22 @@ export default {
   },
   methods: {
     submitForm(formName) {
+
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
   },
   created() {
+    let blogId = this.$route.query.blogId
+    let url = 'http://localhost:8081/blog/'+blogId
+    request.get(url).then(res=>{
+      const blog = res.data
+      this.ruleForm.id = blog.id
+      this.ruleForm.title = blog.title
+      this.ruleForm.description = blog.description
+      this.ruleForm.content = blog.content
+    })
   }
 }
 </script>

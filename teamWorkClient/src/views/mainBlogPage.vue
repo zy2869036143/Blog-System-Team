@@ -29,25 +29,30 @@
               <el-option label="博客" value="1"></el-option>
               <el-option label="用户" value="2"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="onSearch"></el-button>
           </el-input>
 
-        <el-dropdown>
+        <el-dropdown v-if="ifLogin">
       <span class="el-dropdown-link">
         <div style="text-align: center">
-          <el-avatar :size="25" :src="circleUrl" style="float: left; position: center"></el-avatar>
-          <div style="float: left; margin-left: 5px;position: center"> {1}</div>
+<!--          <el-avatar :size="25" :src="circleUrl" style="float: left; position: center"></el-avatar>-->
+          <div style="float: left; margin-left: 5px;position: center"> {{user.username}}</div>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
-
-
       </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-24gf-playlistHeart2"  command="a" @click.native="dialogVisible=true">我的收藏</el-dropdown-item>
+          <el-dropdown-menu slot="dropdown" :hide-on-click='false'>
+            <el-dropdown-item icon="el-icon-24gf-playlistHeart2"  command="a" >
+                我的收藏
+            </el-dropdown-item>
             <el-dropdown-item icon="el-icon-gerenziliao"  command="b" @click.native="$router.push('/info')">个人资料</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="$router.push('/login')">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="ifLogin=false;user={};">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+
+          <router-link :to="{path:'/login'}" class="router-link" v-if="!ifLogin">登录</router-link>
+
+
+
       </el-menu>
 
     </el-header>
@@ -67,6 +72,13 @@
   margin-top: 18px;
   color: black;
 }
+.router-link {
+  float: right;
+  margin-right: 20px;
+  margin-top: 18px;
+  color: black;
+  text-decoration: none;
+}
 .el-select  {
   width: 80px;
 }
@@ -76,6 +88,8 @@
 </style>
 
 <script>
+import request from "../util/request";
+
 export default {
   data(){
     return{
@@ -83,9 +97,18 @@ export default {
       subItem:[],
       select:'1',
       search:'',
+      searchBlog:[],
+      ifLogin: false,
+      user:{},
     }
   },
   created() {
+    if(!this.$route.params.user){
+      this.ifLogin = false;
+    }else{
+      this.ifLogin = true
+      this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    }
 
     this.subItem=[
       {
@@ -126,6 +149,21 @@ export default {
         }]
       },
     ]
+  },
+  methods:{
+    onSearch(){
+      if(this.select === '1'){
+        request.post('http://localhost:8081/blog/selectByKey',this.search).then(res=>{
+          this.searchBlog = res.data;
+          console.log(this.searchBlog)
+          this.$router.push({
+            path:`/searchBlogs/${encodeURIComponent(JSON.stringify(this.searchBlog))}`,
+          })
+        })
+
+
+      }
+    }
   }
 }
 </script>

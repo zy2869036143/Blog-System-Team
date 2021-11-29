@@ -8,6 +8,7 @@ import ownBlogs from "../views/ownBlogs"
 import blogDetails from "../views/blogDetails"
 import editBlogs from "../views/editBlogs"
 import info from "../views/info"
+import searchBlogs from "../views/searchBlog"
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +19,7 @@ export default new Router({
     },
     {
       path: '',
-      redirect: 'login'
+      redirect: '/mainBlogPage/allBlogs'
     },
     {
       path: '/login/register',
@@ -29,7 +30,7 @@ export default new Router({
       component: mainBlogsPage,
       children: [
         {
-          path: '/mainBlogPage/allBlogs',
+          path: '/mainBlogPage/allBlogs/:user?',
           component: allBlogs,
         },
         {
@@ -47,6 +48,10 @@ export default new Router({
         {
           path: '/info',
           component: info
+        },
+        {
+          path: '/searchBlogs/:blogs',
+          component: searchBlogs
         },
       ],
 

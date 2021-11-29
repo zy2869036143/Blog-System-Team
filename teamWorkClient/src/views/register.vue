@@ -4,11 +4,11 @@
       <el-form size="mini" v-model="form" label='博客'>
         <p class="title">注册你的专属blog</p>
 
+<!--        <el-form-item>-->
+<!--          <el-input placeholder="账号" v-model="form.account" prefix-icon="el-icon-user" size="medium"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item>
-          <el-input placeholder="账号" v-model="form.account" prefix-icon="el-icon-user" size="medium"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input placeholder="昵称" v-model="form.name" prefix-icon="el-icon-s-custom" size="medium"></el-input>
+          <el-input placeholder="昵称" v-model="form.username" prefix-icon="el-icon-s-custom" size="medium"></el-input>
         </el-form-item>
         <el-form-item>
           <el-input placeholder="邮箱" v-model="form.email" prefix-icon="el-icon-message" size="medium"></el-input>
@@ -104,7 +104,7 @@ export default {
       checkPwd: '',
       form: {
         account:'',
-        name: '',
+        username: '',
         password: '',
         email:'',
         ifRemember: ''
@@ -115,13 +115,13 @@ export default {
     async register(){
       let flag = true;
 
-      if(this.form.account === ''){
-        await this.$message({
-          type: "error",
-          message: "账号不能为空"
-        })
-        flag = false;
-      }
+      // if(this.form.account === ''){
+      //   await this.$message({
+      //     type: "error",
+      //     message: "账号不能为空"
+      //   })
+      //   flag = false;
+      // }
       if(this.form.name === ''){
         await this.$message({
           type: "error",
@@ -150,6 +150,20 @@ export default {
         })
         flag = false;
       }
+      request.post("http://localhost:8081/register",this.form).then(res=>{
+        if(res.code === 200){
+          this.$message({
+            type:"success",
+            message:"注册成功"
+          })
+          this.$router.push("/login");
+        }else{
+          this.$message({
+            type:"error",
+            message:"用户已存在"
+          })
+        }
+      })
     }
   }
 }
