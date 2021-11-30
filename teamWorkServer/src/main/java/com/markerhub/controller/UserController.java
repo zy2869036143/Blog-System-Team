@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
  * <p>
  *  前端控制器
  * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 @CrossOrigin
 @RestController
@@ -56,6 +53,8 @@ public class UserController {
         }
         return Result.fail("Password wrong");
     }
+
+
 
 
 }

@@ -53,7 +53,6 @@ public class BlogController {
     @RequiresAuthentication
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody Blog blog) {
-
         Blog temp = null;
         if(blog.getId() != null) {
             temp = blogService.getById(blog.getId());
@@ -69,7 +68,6 @@ public class BlogController {
         temp.setTitle(blog.getTitle());
         temp.setCreated(LocalDateTime.now());
         temp.setStatus(0);
-
         BeanUtil.copyProperties(blog, temp, "id", "userId", "created", "status");
         blogService.saveOrUpdate(temp);
         return Result.succ(null);
@@ -87,10 +85,6 @@ public class BlogController {
         else {
             return Result.succ(filter);
         }
-
-
-
-
     }
 
 
