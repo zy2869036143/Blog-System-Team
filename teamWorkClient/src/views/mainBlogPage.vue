@@ -39,13 +39,18 @@
           <div style="float: left; margin-left: 5px;position: center"> {{user.username}}</div>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
+
+
       </span>
           <el-dropdown-menu slot="dropdown" :hide-on-click='false'>
             <el-dropdown-item icon="el-icon-24gf-playlistHeart2"  command="a" >
                 我的收藏
             </el-dropdown-item>
-            <el-dropdown-item icon="el-icon-gerenziliao"  command="b" @click.native="$router.push('/info')">个人资料</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-gerenziliao"  command="b" @click.native="$router.push({
+            path:`/personPage/${encodeURIComponent(JSON.stringify(user))}`,
+          })">个人主页</el-dropdown-item>
             <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="ifLogin=false;user={};">退出登录</el-dropdown-item>
+
           </el-dropdown-menu>
         </el-dropdown>
 

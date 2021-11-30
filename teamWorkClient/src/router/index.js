@@ -8,6 +8,7 @@ import ownBlogs from "../views/ownBlogs"
 import blogDetails from "../views/blogDetails"
 import editBlogs from "../views/editBlogs"
 import info from "../views/info"
+import personPage from"../views/personPage"
 import searchBlogs from "../views/searchBlog"
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
         {
           path: '/searchBlogs/:blogs',
           component: searchBlogs
+        },
+        {
+          path: '/personPage/:user?',
+          component: personPage
         },
       ],
 
