@@ -2,7 +2,7 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
   mybatis.type-aliases-package: com.markerhub.entity
 server:
-  port: 8081
+  port: 9090
 markerhub:
   jwt:
     secret: f4e2e52034348f86b67cde581c0f9eb5

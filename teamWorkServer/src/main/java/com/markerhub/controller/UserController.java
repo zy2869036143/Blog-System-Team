@@ -5,6 +5,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.markerhub.common.dto.LoginDto;
 import com.markerhub.common.lang.Result;
+import com.markerhub.entity.Blog;
 import com.markerhub.entity.User;
 import com.markerhub.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -53,6 +54,9 @@ public class UserController {
         }
         return Result.fail("Password wrong");
     }
+
+
+
 
 
 
