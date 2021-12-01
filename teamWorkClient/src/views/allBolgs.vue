@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(blog,index) in blogs">
-      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="$router.push({path:'/blogDetails', query: {blogId: blog.id}})">
+      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(blog)">
           <h1>{{blog.title}}</h1>
           <h6>{{blog.created}}</h6>
         <p>{{blog.description}}</p>
@@ -40,46 +40,31 @@ export default {
       yourComment:'',
       ifFavourite:[],
       ifLike:[],
-      blogs: [{
-        created:'2021-11-20',
-        id:"121",
-        title:"22222",
-        description:"dsadasdas",
-      },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"33",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        }],
+      blogs: [],
       currentPage: 1,
       total: 0,
-      pageSize: 5
+      pageSize: 5,
+      user:"",
     }
   },
 
   created() {
     this.page(1)
+    console.log(this.$route.params.user)
+    if(this.$route.params.user){
+
+      this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    }
+
   },
   methods: {
+    cardPush(blog){
+      let pushData = {
+        user: this.user,
+        blogId: blog.id,
+      }
+      this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
+    },
     page(currentPage) {
       console.log(currentPage)
       let getData = {

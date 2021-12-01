@@ -49,8 +49,7 @@
             <el-dropdown-item icon="el-icon-gerenziliao"  command="b" @click.native="$router.push({
             path:`/personPage/${encodeURIComponent(JSON.stringify(user))}`,
           })">个人主页</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="ifLogin=false;user={};">退出登录</el-dropdown-item>
-
+            <el-dropdown-item icon="el-icon-circle-close" command="c" @click.native="logOut()">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -108,13 +107,24 @@ export default {
     }
   },
   created() {
-    if(!this.$route.params.user){
-      this.ifLogin = false;
-    }else{
-      this.ifLogin = true
-      this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    console.log(!localStorage.getItem("user"))
+    if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
+      this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
+      this.ifLogin = true;
+    }else {
+      if(!this.$route.params.user){
+        this.ifLogin = false;
+      }else{
+        this.ifLogin = true
+        this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+        localStorage.setItem('user',this.$route.params.user);
+      }
     }
 
+    let editData = {
+      user:this.user,
+      blogId:'',
+    }
     this.subItem=[
       {
         url:"/mainBlogPage/allBlogs",
@@ -123,7 +133,7 @@ export default {
         },
         id: "全部博客",
         subs:[
-          {url:"/mainBlogPage/allBlogs",
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}`,
             data:{
             },
             id:"全部",
@@ -132,21 +142,21 @@ export default {
         ],
       },
       {
-        url:"/mainBlogPage/ownBlogs",
+        url:`/mainBlogPage/ownBlogs/${encodeURIComponent(JSON.stringify(this.user))}`,
         data:{
         },
         id: "你的博客",
         icon:"el-icon-notebook-1",
         subs:[
           {
-            url:"/mainBlogPage/ownBlogs",
+            url:`/mainBlogPage/ownBlogs/${encodeURIComponent(JSON.stringify(this.user))}`,
             data:{
             },
             id: "你的博客列表",
             icon:"el-icon-liebiao",
           },
           {
-          url:"/editBlogs",
+          url:`/editBlogs/${encodeURIComponent(JSON.stringify(editData))}`,
           data:{
           },
           id: "写博客",
@@ -161,13 +171,22 @@ export default {
         request.post('http://localhost:8081/blog/selectByKey',this.search).then(res=>{
           this.searchBlog = res.data;
           console.log(this.searchBlog)
+          let data = {
+            user:this.user,
+            searchBlog:this.searchBlog,
+          }
           this.$router.push({
-            path:`/searchBlogs/${encodeURIComponent(JSON.stringify(this.searchBlog))}`,
+            path:`/searchBlogs/${encodeURIComponent(JSON.stringify(data))}`,
           })
         })
 
 
       }
+    },
+    logOut(){
+      localStorage.setItem("user","");
+      this.$router.replace("/");
+      location.reload();
     }
   }
 }
