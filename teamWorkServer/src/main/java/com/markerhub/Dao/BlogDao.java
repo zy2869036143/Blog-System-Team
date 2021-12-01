@@ -9,4 +9,6 @@ import java.util.List;
 public interface BlogDao {
     List<Blog> getblogByKey(String key);
     List<Blog> getblogs();
+    void updateblog(Blog blog);
+    List<Blog> getByname(String username);
 }

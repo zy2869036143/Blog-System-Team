@@ -4,6 +4,7 @@ package com.markerhub.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Blog;
@@ -92,6 +93,39 @@ public class BlogController {
 
 
     }
+
+    @PostMapping("/blog/addpraisenum")
+    public Result addpraisenum(@RequestBody Blog blog){
+       int praise = blog.getPraise();
+       blog.setPraise(++praise);
+       blogService.updateblog(blog);
+       return Result.succ("添加博客点赞数成功");
+
+    }
+
+    @PostMapping("/blog/delpraisenum")
+    public Result delpraisenum(@RequestBody Blog blog){
+        int praise = blog.getPraise();
+        praise--;
+        blog.setPraise(praise);
+        blogService.updateblog(blog);
+        return Result.succ("减少博客点赞数成功");
+
+    }
+
+    @PostMapping("/blog/getuserpraises")
+    public Result getuserpraises(String username){
+        List<Blog> pblogs = blogService.getByname(username);
+        if (pblogs.size()==0){
+            return Result.succ("此用户无点赞博客");
+        }else {
+            return Result.succ(200,"获取用户点赞博客成功",pblogs);
+        }
+
+
+    }
+
+
 
 
 }

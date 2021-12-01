@@ -5,6 +5,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.markerhub.common.dto.LoginDto;
 import com.markerhub.common.lang.Result;
+import com.markerhub.entity.Blog;
 import com.markerhub.entity.User;
 import com.markerhub.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -17,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
  * <p>
  *  前端控制器
  * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 @CrossOrigin
 @RestController
@@ -56,6 +54,11 @@ public class UserController {
         }
         return Result.fail("Password wrong");
     }
+
+
+
+
+
 
 
 }

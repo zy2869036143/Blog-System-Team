@@ -4,4 +4,10 @@
     <select id="getblogs" resultType="com.markerhub.entity.Blog">
         select * from m_blog
     </select>
+    <update id="updateblog" parameterType="com.markerhub.entity.Blog">
+        update m_blog set praise = #{praise} where id = #{id}
+    </update>
+    <select id="getByname" parameterType="String" resultType="com.markerhub.entity.Blog">
+        select * from m_blog where id = (select p_blogid from m_praise where p_username = #{username})
+    </select>
 </mapper>
