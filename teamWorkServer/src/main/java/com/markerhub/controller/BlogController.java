@@ -113,7 +113,7 @@ public class BlogController {
 
     }
 
-    @PostMapping("/blog/getuserpraises")
+    @PostMapping("/blog/getuserpraiseblog")
     public Result getuserpraises(String username){
         List<Blog> pblogs = blogService.getByname(username);
         if (pblogs.size()==0){
