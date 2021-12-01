@@ -4,12 +4,10 @@
     <el-timeline>
 
       <el-timeline-item :timestamp="blog.created" placement="top" v-for="blog in blogs" :key="blog.id">
-        <el-card @click.native="$router.push({path:'/blogDetails', params: {blogId: blog.id}})" shadow="hover">
-          <h4>
-            <router-link :to="{path:'/blogDetails', params: {blogId: blog.id}}">
+        <el-card @click.native="cardPush(blog)" shadow="hover">
+          <h3>
               {{blog.title}}
-            </router-link>
-          </h4>
+          </h3>
           <p>{{blog.description}}</p>
         </el-card>
       </el-timeline-item>
@@ -18,56 +16,60 @@
 
 
 
-    <el-pagination class="mpage"
-                   background
-                   layout="prev, pager, next"
-                   :current-page="currentPage"
-                   :page-size="pageSize"
-                   :total="total"
-                   @current-change=page>
-    </el-pagination>
+<!--    <el-pagination class="mpage"-->
+<!--                   background-->
+<!--                   layout="prev, pager, next"-->
+<!--                   :current-page="currentPage"-->
+<!--                   :page-size="pageSize"-->
+<!--                   :total="total"-->
+<!--                   @current-change=page>-->
+<!--    </el-pagination>-->
   </div>
 
 </template>
 <script>
+import request from "../util/request";
+
 export default {
   data() {
     return {
-      blogs: [{
-        created:'2021-11-20',
-        id:"121",
-        title:"22222",
-        description:"dsadasdas",
-      },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        },
-        {
-          created:'2021-11-20',
-          id:"121",
-          title:"22222",
-          description:"dsadasdas",
-        }],
+      user:'',
+      blogs: [],
       currentPage: 1,
       total: 0,
       pageSize: 5
     }
   },
+   created() {
+     console.log(this.$route.params.user)
+     if(this.$route.params.user==='{}'||!this.$route.params.user){
+       this.$message({
+         type:"warning",
+         message:"请先登录",
+       })
+     }else{
+       this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+       console.log(this.user);
+       let postData = {
+         username: this.user.username,
+       }
+       request.post("http://localhost:8081/search",postData).then(res=>{
+         if(res.code === 200){
+           this.blogs = res.data;
+         }
+       })
+     }
+
+   },
+   methods:{
+     cardPush(blog){
+       let pushData = {
+         user: this.user,
+         blogId: blog.id,
+       }
+       this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
+     },
+   }
 }
 </script>
 <style scoped>

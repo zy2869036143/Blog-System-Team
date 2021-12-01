@@ -51,7 +51,7 @@ public class BlogController {
         return Result.succ(blog);
     }
 
-    @RequiresAuthentication
+//    @RequiresAuthentication
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody Blog blog) {
 
