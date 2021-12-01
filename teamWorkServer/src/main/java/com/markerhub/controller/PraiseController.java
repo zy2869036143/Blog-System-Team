@@ -17,21 +17,21 @@ public class PraiseController {
     PraiseService praiseService;
 
     @PostMapping("/addpraiseinfo")
-    public Result addpraise(@RequestBody Praise praise){
+    public Result addpraiseinfo(@RequestBody Praise praise){
         praiseService.addpraise(praise);
         return Result.succ("添加博客点赞信息成功");
 
     }
 
     @PostMapping("/delpraiseinfo")
-    public Result delpraise(@RequestBody Praise praise){
+    public Result delpraiseinfo(@RequestBody Praise praise){
         praiseService.delpraise(praise);
         return Result.succ("删除博客点赞信息成功");
 
     }
 
     @PostMapping("/getpraiseinfo")
-    public Result getpraise(String username){
+    public Result getpraiseinfo(String username){
         List<Praise> praiseList = praiseService.getpraise(username);
         return Result.succ(200,"获取用户："+username+"博客点赞信息成功",praiseList);
 
