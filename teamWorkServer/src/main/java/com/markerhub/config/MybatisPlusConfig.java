@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @MapperScan("com.markerhub.mapper")
-public class MybatisPlusConfig {
+public class    MybatisPlusConfig {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {

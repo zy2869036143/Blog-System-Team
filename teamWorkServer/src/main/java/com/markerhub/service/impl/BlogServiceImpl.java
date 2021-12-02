@@ -18,9 +18,6 @@ import java.util.List;
  * <p>
  *  服务实现类
  * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 @Service("BlogService")
 @MapperScan("com.markerhub.Dao")

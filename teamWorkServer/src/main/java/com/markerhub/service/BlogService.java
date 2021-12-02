@@ -9,9 +9,6 @@ import java.util.List;
  * <p>
  *  服务类
  * </p>
- *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 public interface BlogService extends IService<Blog> {
     List<Blog> getblogByKey(String key);

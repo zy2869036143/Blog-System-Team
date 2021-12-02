@@ -14,12 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
  *
- * @author 关注公众号：MarkerHub
- * @since 2020-05-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
