@@ -4,15 +4,20 @@ package com.markerhub.controller;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.markerhub.common.dto.LoginDto;
+import com.markerhub.common.dto.Username;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Blog;
 import com.markerhub.entity.User;
 import com.markerhub.service.UserService;
+import com.markerhub.service.UserinfoService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.springframework.aop.target.LazyInitTargetSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -26,6 +31,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserinfoService userinfoService;
 
     @RequiresAuthentication
     @GetMapping("/index")
@@ -53,6 +61,14 @@ public class UserController {
             return Result.succ(null);
         }
         return Result.fail("Password wrong");
+    }
+
+    @PostMapping("/search")
+    public Result search(@Validated @RequestBody Username username){
+        System.out.println("++"+username.getUsername());
+        List<User> userList = userinfoService.getSimilar(username.getUsername());
+        System.out.println(userList.size());
+        return  Result.succ(userinfoService.getSimilar(username.getUsername()));
     }
 
 

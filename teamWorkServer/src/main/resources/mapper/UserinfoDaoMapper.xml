@@ -7,4 +7,8 @@
     <select id="getinfo" parameterType="Long" resultType="com.markerhub.entity.User">
         select * from m_user where id = #{id}
     </select>
+
+    <select id="getSimilarUser" parameterType="String" resultType="com.markerhub.entity.User">
+        select  *  from m_user where username LIKE '%${username}%'
+    </select>
 </mapper>

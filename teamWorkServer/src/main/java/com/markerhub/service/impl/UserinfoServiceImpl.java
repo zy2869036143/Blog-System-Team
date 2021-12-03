@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service("UserinfoService")
 @Transactional
 public class UserinfoServiceImpl implements UserinfoService {
@@ -21,5 +23,10 @@ public class UserinfoServiceImpl implements UserinfoService {
     @Override
     public User getinfo(Long id){
         return userinfoDao.getinfo(id);
+    }
+
+    @Override
+    public List<User> getSimilar(String username) {
+        return userinfoDao.getSimilarUser(username);
     }
 }
