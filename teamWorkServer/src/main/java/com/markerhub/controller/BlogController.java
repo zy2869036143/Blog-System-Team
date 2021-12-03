@@ -51,7 +51,7 @@ public class BlogController {
         return Result.succ(blog);
     }
 
-    @RequiresAuthentication
+//    @RequiresAuthentication
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody Blog blog) {
 
@@ -113,7 +113,7 @@ public class BlogController {
 
     }
 
-    @PostMapping("/blog/getuserpraises")
+    @PostMapping("/blog/getuserpraiseblog")
     public Result getuserpraises(String username){
         List<Blog> pblogs = blogService.getByname(username);
         if (pblogs.size()==0){

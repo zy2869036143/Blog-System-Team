@@ -4,7 +4,7 @@
       <h2> {{ blog.title }}</h2>
       <el-button type="primary" icon="el-icon-edit" plain v-if="ownBlog"
                  size="mini"
-                 @click="$router.push({path: '/editBlogs', query: {blogId: blog.id}})">
+                 @click="handleEdit()">
         编辑
       </el-button>
       <el-divider></el-divider>
@@ -58,11 +58,20 @@ export default {
         title: "111111",
         content: "2222222222"
       },
-
+      user:'',
       ownBlog: true
     }
   },
   methods:{
+    handleEdit(){
+      let editData = {
+        user:this.user,
+        blogId:this.blog.id,
+      }
+      this.$router.push({
+        path:`/editBlogs/${encodeURIComponent(JSON.stringify(editData))}`,
+      })
+    },
     like(e) {
       e.stopPropagation();
       this.ifLike = !this.ifLike
@@ -92,12 +101,22 @@ export default {
     },
   },
   created() {
-    let blogId = this.$route.query.blogId
+    let data =  JSON.parse(decodeURIComponent(this.$route.params.data))
+    let blogId = data.blogId
+    this.user = data.user
     let url = 'http://localhost:8081/blog/'+blogId
     request.get(url).then(res=>{
       const blog = res.data
       this.blog.id = blog.id
       this.blog.title = blog.title
+      this.blog.userId = blog.userId
+      console.log(this.user.id)
+      console.log(this.blog.userId)
+      if(this.blog.userId === this.user.id){
+        this.ownBlog = true;
+      }else{
+        this.ownBlog = false;
+      }
 
       var MardownIt = require("markdown-it")
       var md = new MardownIt()

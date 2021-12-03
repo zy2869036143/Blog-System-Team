@@ -35,15 +35,15 @@ export default new Router({
           component: allBlogs,
         },
         {
-          path: '/mainBlogPage/ownBlogs',
+          path: '/mainBlogPage/ownBlogs/:user?',
           component: ownBlogs,
         },
         {
-          path: '/blogDetails',
+          path: '/blogDetails/:data?',
           component: blogDetails
         },
         {
-          path: '/editBlogs',
+          path: '/editBlogs/:data?',
           component: editBlogs
         },
         {
@@ -51,7 +51,7 @@ export default new Router({
           component: info
         },
         {
-          path: '/searchBlogs/:blogs',
+          path: '/searchBlogs/:blogs?',
           component: searchBlogs
         },
         {
