@@ -61,3 +61,17 @@ CREATE TABLE `m_user` (
 -- Records of m_user
 -- ----------------------------
 INSERT INTO `m_user` VALUES ('1', 'markerhub', 'https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg', null, '96e79218965eb72c92a549dd5a330112', '0', '2020-04-20 10:44:01', null);
+
+--
+-- Table structure for table `m_praise`
+--
+
+DROP TABLE IF EXISTS `m_praise`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `m_praise` (
+                            `p_username` varchar(100) DEFAULT NULL,
+                            `p_blogid` int DEFAULT NULL,
+                            `p_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;

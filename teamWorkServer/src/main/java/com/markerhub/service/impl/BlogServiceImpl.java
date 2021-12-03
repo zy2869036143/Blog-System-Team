@@ -36,4 +36,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     public List<Blog> getblogs(){
         return blogDao.getblogs();
     }
+
+    @Override
+    public void updateblog(Blog blog){
+        blogDao.updateblog(blog);
+    }
+
+    @Override
+    public List<Blog> getByname(String username){
+        return blogDao.getByname(username);
+    }
 }

@@ -4,6 +4,7 @@ package com.markerhub.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Blog;
@@ -50,9 +51,10 @@ public class BlogController {
         return Result.succ(blog);
     }
 
-    @RequiresAuthentication
+//    @RequiresAuthentication
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody Blog blog) {
+
         Blog temp = null;
         if(blog.getId() != null) {
             temp = blogService.getById(blog.getId());
@@ -68,6 +70,7 @@ public class BlogController {
         temp.setTitle(blog.getTitle());
         temp.setCreated(LocalDateTime.now());
         temp.setStatus(0);
+
         BeanUtil.copyProperties(blog, temp, "id", "userId", "created", "status");
         blogService.saveOrUpdate(temp);
         return Result.succ(null);
@@ -85,7 +88,44 @@ public class BlogController {
         else {
             return Result.succ(filter);
         }
+
+
+
+
     }
+
+    @PostMapping("/blog/addpraisenum")
+    public Result addpraisenum(@RequestBody Blog blog){
+       int praise = blog.getPraise();
+       blog.setPraise(++praise);
+       blogService.updateblog(blog);
+       return Result.succ("添加博客点赞数成功");
+
+    }
+
+    @PostMapping("/blog/delpraisenum")
+    public Result delpraisenum(@RequestBody Blog blog){
+        int praise = blog.getPraise();
+        praise--;
+        blog.setPraise(praise);
+        blogService.updateblog(blog);
+        return Result.succ("减少博客点赞数成功");
+
+    }
+
+    @PostMapping("/blog/getuserpraiseblog")
+    public Result getuserpraises(String username){
+        List<Blog> pblogs = blogService.getByname(username);
+        if (pblogs.size()==0){
+            return Result.succ("此用户无点赞博客");
+        }else {
+            return Result.succ(200,"获取用户点赞博客成功",pblogs);
+        }
+
+
+    }
+
+
 
 
 }

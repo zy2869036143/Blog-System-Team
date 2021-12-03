@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(blog,index) in blogs">
-      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="$router.push({path:'/blogDetails', query: {blogId: blog.id}})">
+      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(blog)">
         <h1>{{blog.title}}</h1>
         <h6>{{blog.created}}</h6>
         <p>{{blog.description}}</p>
@@ -72,7 +72,8 @@ export default {
         }],
       currentPage: 1,
       total: 0,
-      pageSize: 5
+      pageSize: 5,
+      user:{},
     }
   },
 
@@ -90,9 +91,18 @@ export default {
   },
   methods: {
     load(){
-      this.blogs = JSON.parse(decodeURIComponent(this.$route.params.blogs));
+      let data = JSON.parse(decodeURIComponent(this.$route.params.blogs));
+      this.blogs = data.searchBlog
+      this.user = data.user;
       this.$forceUpdate();
       console.log(this.blogs)
+    },
+    cardPush(blog){
+      let pushData = {
+        user: this.user,
+        blogId: blog.id,
+      }
+      this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
     },
     like(e,index) {
       e.stopPropagation();

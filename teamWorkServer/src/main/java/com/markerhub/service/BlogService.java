@@ -13,4 +13,6 @@ import java.util.List;
 public interface BlogService extends IService<Blog> {
     List<Blog> getblogByKey(String key);
     List<Blog> getblogs();
+    void updateblog(Blog blog);
+    List<Blog> getByname(String username);
 }
