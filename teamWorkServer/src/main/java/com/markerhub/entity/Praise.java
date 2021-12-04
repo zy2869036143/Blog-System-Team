@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("m_blog")
 public class Praise {
-    private String p_username;
+    private int p_id;
 
     private int p_blogid;
 

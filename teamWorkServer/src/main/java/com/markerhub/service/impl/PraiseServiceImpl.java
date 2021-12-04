@@ -26,8 +26,8 @@ public class PraiseServiceImpl implements PraiseService {
     }
 
     @Override
-    public List<Praise> getpraise(String username){
-        return praiseDao.getpraise(username);
+    public List<Praise> getpraise(int id){
+        return praiseDao.getpraise(id);
     }
 
 }

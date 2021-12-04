@@ -10,5 +10,5 @@ import java.util.List;
 public interface PraiseDao {
     void addpraise(Praise praise);
     void delpraise(Praise praise);
-    List<Praise> getpraise(String username);
+    List<Praise> getpraise(int id);
 }

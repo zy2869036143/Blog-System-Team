@@ -7,5 +7,5 @@ import java.util.List;
 public interface PraiseService {
     void addpraise(Praise praise);
     void delpraise(Praise praise);
-    List<Praise> getpraise(String username);
+    List<Praise> getpraise(int id);
 }
