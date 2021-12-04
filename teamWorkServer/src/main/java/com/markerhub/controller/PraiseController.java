@@ -33,9 +33,9 @@ public class PraiseController {
     }
 
     @PostMapping("/getpraiseinfo")
-    public Result getpraiseinfo(int id){
-        List<Praise> praiseList = praiseService.getpraise(id);
-        return Result.succ(200,"获取用户："+id+"博客点赞信息成功",praiseList);
+    public Result getpraiseinfo(int userid){
+        List<Praise> praiseList = praiseService.getpraise(userid);
+        return Result.succ(200,"获取用户id："+userid+"博客点赞信息成功",praiseList);
 
     }
 

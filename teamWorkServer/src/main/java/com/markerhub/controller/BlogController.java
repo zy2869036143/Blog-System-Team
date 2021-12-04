@@ -114,8 +114,8 @@ public class BlogController {
     }
 
     @PostMapping("/blog/getuserpraiseblog")
-    public Result getuserpraises(int id){
-        List<Blog> pblogs = blogService.getByid(id);
+    public Result getuserpraises(int userid){
+        List<Blog> pblogs = blogService.getByid(userid);
         if (pblogs.size()==0){
             return Result.succ("此用户无点赞博客");
         }else {
