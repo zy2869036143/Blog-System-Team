@@ -37,7 +37,7 @@ public class BlogController {
 
         JSONObject jsonObject = JSONObject.fromObject(data);
         Integer currentPage = jsonObject.getInt("currentPage");
-        Page page = new Page(currentPage, 5);
+        Page page = new Page(currentPage, 6);
         IPage pageData = blogService.page(page, new QueryWrapper<Blog>().orderByDesc("created"));
 
         return Result.succ(pageData);

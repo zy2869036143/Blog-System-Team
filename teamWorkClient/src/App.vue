@@ -6,8 +6,12 @@
 </template>
 
 <script>
+// import card from "./component/card"
 export default {
-  name: 'App'
+  name: 'App',
+  // components: {
+  //   card
+  // }
 }
 </script>
 
