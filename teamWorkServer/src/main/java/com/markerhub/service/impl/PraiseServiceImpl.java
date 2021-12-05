@@ -33,7 +33,6 @@ public class PraiseServiceImpl implements PraiseService {
     @Override
     public List<Praise> getpraise(int userid){
         List<Praise> p = praiseDao.getpraise(userid);
-        System.out.println(p);
         return p;
     }
 

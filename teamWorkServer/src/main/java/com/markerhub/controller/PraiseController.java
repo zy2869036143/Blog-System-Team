@@ -19,7 +19,6 @@ public class PraiseController {
 
     @PostMapping("/addpraiseinfo")
     public Result addpraiseinfo(@RequestBody Praise praise){
-        System.out.println(praise);
         praise.setPtime(LocalDateTime.now());
         praiseService.addpraise(praise);
         return Result.succ("添加博客点赞信息成功");
