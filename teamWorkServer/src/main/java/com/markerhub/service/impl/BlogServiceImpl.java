@@ -43,7 +43,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public List<Blog> getByid(int id){
-        return blogDao.getByid(id);
+    public List<Blog> getpraiseByid(int id){
+        return blogDao.getpraiseByid(id);
+    }
+
+    @Override
+    public List<Blog> getfavoriteByid(int id){
+        return blogDao.getpraiseByid(id);
     }
 }

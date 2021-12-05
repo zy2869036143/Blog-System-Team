@@ -14,5 +14,6 @@ public interface BlogService extends IService<Blog> {
     List<Blog> getblogByKey(String key);
     List<Blog> getblogs();
     void updateblog(Blog blog);
-    List<Blog> getByid(int id);
+    List<Blog> getpraiseByid(int id);
+    List<Blog> getfavoriteByid(int id);
 }

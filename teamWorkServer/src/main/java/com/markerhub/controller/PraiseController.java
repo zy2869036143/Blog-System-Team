@@ -19,7 +19,8 @@ public class PraiseController {
 
     @PostMapping("/addpraiseinfo")
     public Result addpraiseinfo(@RequestBody Praise praise){
-        praise.setP_time(LocalDateTime.now());
+        System.out.println(praise);
+        praise.setPtime(LocalDateTime.now());
         praiseService.addpraise(praise);
         return Result.succ("添加博客点赞信息成功");
 
@@ -32,8 +33,9 @@ public class PraiseController {
 
     }
 
-    @PostMapping("/getpraiseinfo")
+    @GetMapping("/getpraiseinfo")
     public Result getpraiseinfo(int userid){
+        System.out.println(userid);
         List<Praise> praiseList = praiseService.getpraise(userid);
         return Result.succ(200,"获取用户id："+userid+"博客点赞信息成功",praiseList);
 

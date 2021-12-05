@@ -115,11 +115,42 @@ public class BlogController {
 
     @PostMapping("/blog/getuserpraiseblog")
     public Result getuserpraises(int userid){
-        List<Blog> pblogs = blogService.getByid(userid);
+        List<Blog> pblogs = blogService.getpraiseByid(userid);
         if (pblogs.size()==0){
             return Result.succ("此用户无点赞博客");
         }else {
             return Result.succ(200,"获取用户点赞博客成功",pblogs);
+        }
+
+
+    }
+
+    @PostMapping("/blog/addfavoritenum")
+    public Result addfavoritenum(@RequestBody Blog blog){
+        int favorite = blog.getFavorite();
+        blog.setFavorite(++favorite);
+        blogService.updateblog(blog);
+        return Result.succ("添加博客收藏数成功");
+
+    }
+
+    @PostMapping("/blog/delfavoritenum")
+    public Result delfavoritenum(@RequestBody Blog blog){
+        int favorite = blog.getFavorite();
+        favorite--;
+        blog.setFavorite(favorite);
+        blogService.updateblog(blog);
+        return Result.succ("减少博客收藏数成功");
+
+    }
+
+    @PostMapping("/blog/getuserfavoriteblog")
+    public Result getuserfavorites(int userid){
+        List<Blog> fblogs = blogService.getfavoriteByid(userid);
+        if (fblogs.size()==0){
+            return Result.succ("此用户无收藏博客");
+        }else {
+            return Result.succ(200,"获取用户收藏博客成功",fblogs);
         }
 
 

@@ -5,9 +5,13 @@
         select * from m_blog
     </select>
     <update id="updateblog" parameterType="com.markerhub.entity.Blog">
-        update m_blog set praise = #{praise} where id = #{id}
+        update m_blog set praise = #{praise} and favorite = #{favorite} where id = #{id}
     </update>
-    <select id="getByid" parameterType="int" resultType="com.markerhub.entity.Blog">
+    <select id="getpraiseByid" parameterType="int" resultType="com.markerhub.entity.Blog">
         select * from m_blog where id = (select p_blogid from m_praise where p_id = #{id})
     </select>
+    <select id="getfavoriteByid" parameterType="int" resultType="com.markerhub.entity.Blog">
+        select * from m_blog where id = (select f_blogid from m_favorite where f_id = #{id})
+    </select>
+
 </mapper>
