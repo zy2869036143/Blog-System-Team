@@ -39,6 +39,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public void updateblog(Blog blog){
+        System.out.println(blog);
         blogDao.updateblog(blog);
     }
 

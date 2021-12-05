@@ -39,14 +39,14 @@ public class Blog implements Serializable {
     @NotBlank(message = "内容不能为空")
     private String content;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 
     private Integer status;
 
-    private Integer praise;
+    private int praise;
 
-    private Integer favorite;
+    private int favorite;
 
 
 

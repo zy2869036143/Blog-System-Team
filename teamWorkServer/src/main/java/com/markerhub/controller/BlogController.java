@@ -98,7 +98,7 @@ public class BlogController {
     public Result addpraisenum(@RequestBody Blog blog){
        int praise = blog.getPraise();
        blog.setPraise(++praise);
-       blogService.updateblog(blog);
+       blogService.saveOrUpdate(blog);
        return Result.succ("添加博客点赞数成功");
 
     }
@@ -108,7 +108,7 @@ public class BlogController {
         int praise = blog.getPraise();
         praise--;
         blog.setPraise(praise);
-        blogService.updateblog(blog);
+        blogService.saveOrUpdate(blog);
         return Result.succ("减少博客点赞数成功");
 
     }
