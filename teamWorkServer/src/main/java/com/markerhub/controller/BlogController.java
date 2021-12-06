@@ -127,7 +127,7 @@ public class BlogController {
     public Result addfavoritenum(@RequestBody Blog blog){
         int favorite = blog.getFavorite();
         blog.setFavorite(++favorite);
-        blogService.updateblog(blog);
+        blogService.saveOrUpdate(blog);
         return Result.succ("添加博客收藏数成功");
 
     }
@@ -137,7 +137,7 @@ public class BlogController {
         int favorite = blog.getFavorite();
         favorite--;
         blog.setFavorite(favorite);
-        blogService.updateblog(blog);
+        blogService.saveOrUpdate(blog);
         return Result.succ("减少博客收藏数成功");
 
     }
