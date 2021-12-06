@@ -85,9 +85,10 @@ export default {
   },
   watch:{
     $route(to,from){
-      this.blogs = JSON.parse(decodeURIComponent(this.$route.params.blogs));
-      console.log(this.blogs)
-    }
+      this.load()
+    },
+    deep:true,
+    immediate:true,
   },
   methods: {
     load(){

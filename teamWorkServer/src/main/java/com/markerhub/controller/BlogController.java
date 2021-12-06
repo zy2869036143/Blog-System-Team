@@ -121,8 +121,6 @@ public class BlogController {
         }else {
             return Result.succ(200,"获取用户点赞博客成功",pblogs);
         }
-
-
     }
 
     @PostMapping("/blog/addfavoritenum")

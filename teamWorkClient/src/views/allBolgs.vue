@@ -8,6 +8,7 @@
                    :total="total"
                    @current-change=page>
     </el-pagination>
+
     <div v-for="(blog,index) in blogs" class="container">
       <div>
         <card @click.native="cardPush(blog)"

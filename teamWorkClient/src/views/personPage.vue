@@ -1,25 +1,112 @@
 <template>
-  <el-container style="margin-top: 0">
+<!--  <el-container style="margin-top: 0">-->
+<!--    -->
+<!--    <el-header>-->
+<!--      -->
+
+<!--    </el-header>-->
+
+<!--  </el-container>-->
+  <el-container>
     <el-header>
-      <h2 style="margin-left: 70px">{{user.username}}</h2>
 
+      <h1 style="margin-left: 45px;font-size: 45px">
+        <i class="el-icon-user-solid"></i>
+        {{user.username}}</h1>
     </el-header>
-
+    <el-container>
+      <el-aside>
+        <el-card class="box-card" style="height: 500px;width: 260px">
+          <div slot="header" class="clearfix">
+            <span>个人资料</span>
+          </div>
+          <div class="text item">
+            {{'昵称 ：' + user.username }}
+          </div>
+        </el-card>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-right: 80px">
+            <el-tab-pane label="我的动态" name="first">我的动态</el-tab-pane>
+            <el-tab-pane label="我的收藏" name="second">我的收藏</el-tab-pane>
+            <el-tab-pane label="我的关注" name="third">我的关注</el-tab-pane>
+            <el-tab-pane label="我赞过" name="fourth">
+              <el-timeline-item placement="top" v-for="blog in pblogs" :key="blog.id">
+                <el-card @click.native="cardPush(blog)" shadow="hover">
+                  <h3>
+                    {{blog.title}}
+                  </h3>
+                  <p>{{blog.description}}</p>
+                </el-card>
+              </el-timeline-item>
+            </el-tab-pane>
+          </el-tabs>
+        </el-main>
+      </el-container>
+    </el-container>
   </el-container>
 </template>
 
 <script>
+import request from "../util/request";
+
 export default {
   name: "personPage",
-  data(){
-    return{
-      user:{},
+  data() {
+    return {
+      user: {},
+      activeName: 'first',
+      pblogs:[
+        {
+          title:'12121',
+          description:'232323',
+          created:'2021-03-23'
+        }
+      ],
     }
   },
   created() {
     this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
   },
-  methods:{
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+      if (tab.name === 'first') {
+        // 触发‘配置管理’事件
+        this.first();
+      }
+      else if(tab.name==='second') {
+        // 触发‘用户管理’事件
+        this.second();
+      }
+      else if(tab.name==='third') {
+        // 触发‘用户管理’事件
+        this.third();
+      }
+      else if(tab.name==='fourth') {
+        // 触发‘用户管理’事件
+        this.fourth();
+      }
+    },
+    fourth(){
+      let form={
+        userid: this.user.id,
+      }
+      console.log(this.user.id)
+      request.post('http://localhost:8081/blog/getuserpraiseblog?userid='+this.user.id).then(res=>{
+        if(res.code===200){
+          this.pblogs=res.data;
+        }
+      })
+    },
+    cardPush(blog){
+      let pushData = {
+        user: this.user,
+        blogId: blog.id,
+      }
+      this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
+    },
 
   }
 }
@@ -27,14 +114,18 @@ export default {
 
 <style scoped>
 .el-header{
- background-image: url("../assets/bg2.jpg");
+ background-image: url("../assets/bg3.jpg");
   background-size:100% 100%;
   text-align: left;
   line-height: 220px;
   height: 210px !important;
   /*width: 1080px !important;*/
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 85px;
+  margin-right: 85px;
   margin-top: 0;
+}
+.el-aside{
+  margin-top: 60px;
+  margin-left: 85px;
 }
 </style>
