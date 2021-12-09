@@ -8,7 +8,7 @@ body {
 }
 
 .title {
-  font-family: "Raleway";
+  font-family: "Raleway", serif;
   font-size: 24px;
   font-weight: 700;
   color: #5D4037;
@@ -122,7 +122,7 @@ h1 + p, p + p {
 }
 
 .card-info h1 {
-  font-family: "Playfair Display";
+  font-family: "Playfair Display", serif;
   font-size: 36px;
   font-weight: 700;
   text-shadow: rgba(0, 0, 0, 0.5) 0 10px 10px;

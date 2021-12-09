@@ -107,7 +107,7 @@ export default {
     }
   },
   created() {
-    console.log(!localStorage.getItem("user"))
+    console.log(localStorage.getItem("user"))
     if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
       this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
       this.ifLogin = true;

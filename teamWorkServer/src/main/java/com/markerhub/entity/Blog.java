@@ -44,9 +44,9 @@ public class Blog implements Serializable {
 
     private Integer status;
 
-    private int praise;
+    private Integer praise;
 
-    private int favorite;
+    private Integer favorite;
 
 
 

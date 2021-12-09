@@ -20,7 +20,7 @@ export default new Router({
     },
     {
       path: '',
-      redirect: '/mainBlogPage/allBlogs'
+      redirect: '/mainBlogPage/allBlogs/:user?'
     },
     {
       path: '/login/register',

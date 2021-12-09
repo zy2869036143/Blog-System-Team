@@ -95,7 +95,7 @@ public class BlogController {
     }
 
     @PostMapping("/blog/addpraisenum")
-    public Result addpraisenum(@RequestBody Blog blog){
+    public Result addpraisenum(@Validated @RequestBody Blog blog){
        int praise = blog.getPraise();
        blog.setPraise(++praise);
        blogService.saveOrUpdate(blog);
