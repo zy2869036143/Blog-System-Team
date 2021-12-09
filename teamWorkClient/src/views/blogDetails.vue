@@ -8,12 +8,12 @@
         编辑
       </el-button>
       <el-divider></el-divider>
-      <div class="markdown-body" v-html="blog.content"></div>
+      <div class="markdown-body" v-html="content"></div>
       <el-divider></el-divider>
-      <el-button circle v-if="!ifLike" icon="el-icon-icon" @click.native="like($event)" size="mini"></el-button>
-      <el-button circle v-if="ifLike" type="primary" icon="el-icon-icon-copy" @click.native="like($event)" size="mini"></el-button>
-      <el-button circle v-if="!ifFavourite" icon="el-icon-shoucang" @click.native="favourite($event)" size="mini"></el-button>
-      <el-button circle v-if="ifFavourite" type="warning" icon="el-icon-shoucang" @click.native="favourite($event)" size="mini"></el-button>
+      <el-button circle v-if="!ifLike" icon="el-icon-icon" @click.native="like($event)" size="mini">{{blog.praise}}</el-button>
+      <el-button circle v-if="ifLike" type="primary" icon="el-icon-icon-copy" @click.native="like($event)" size="mini">{{blog.praise}}</el-button>
+      <el-button circle v-if="!ifFavourite" icon="el-icon-shoucang" @click.native="favourite($event)" size="mini">{{blog.favorite}}</el-button>
+      <el-button circle v-if="ifFavourite" type="warning" icon="el-icon-shoucang" @click.native="favourite($event)" size="mini">{{blog.favorite}}</el-button>
       <el-button circle v-if="!ifComment"  icon="el-icon-pinglun" @click.native="comment($event)" size="mini"></el-button>
       <el-button circle v-if="ifComment" type="info" icon="el-icon-pinglun" @click.native="comment($event)" size="mini"></el-button>
       <div v-if="ifComment">
@@ -44,6 +44,7 @@ import request from "../util/request";
 export default {
   data() {
     return {
+      content:'',
       ifComment:false,
       ifLike:false,
       ifFavourite:false,
@@ -74,16 +75,105 @@ export default {
     },
     like(e) {
       e.stopPropagation();
-      this.ifLike = !this.ifLike
+      if(!this.ifLike){
+
+        let data = {
+          pid: this.user.id,
+          pblogid: this.blog.id,
+        }
+        this.ifLike = !this.ifLike
+        console.log(data)
+        request.post("http://localhost:8081/praise/addpraiseinfo",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+            let temp = this.blog;
+            temp.created = '';
+            request.post("http://localhost:8081/blog/addpraisenum",temp).then(res1=>{
+              if(res1.code === 200){
+                this.blog.praise = this.blog.praise+1
+              }
+            })
+
+          }
+        })
+      }
+      else{
+        let data = {
+          pid: this.user.id,
+          pblogid: this.blog.id,
+        }
+        this.ifLike = !this.ifLike
+        console.log(data)
+        request.post("http://localhost:8081/praise/delpraiseinfo",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+            let temp = this.blog;
+            temp.created = '';
+            request.post("http://localhost:8081/blog/delpraisenum",temp).then(res1=>{
+              if(res1.code === 200){
+                this.blog.praise = this.blog.praise-1
+              }
+            })
+
+          }
+        })
+      }
+      this.$forceUpdate()
       let target = e.target;
       if(target.nodeName === "I"||target.nodeName === "svg"){
         target = e.target.parentNode;
       }
       target.blur();
     },
+
     favourite(e) {
       e.stopPropagation();
-      this.ifFavourite = !this.ifFavourite
+      if(!this.ifFavourite){
+
+        let data = {
+          fid: this.user.id,
+          fblogid: this.blog.id,
+        }
+        this.ifFavourite = !this.ifFavourite
+        console.log(data)
+        request.post("http://localhost:8081/favorite/addfavoriteinfo",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+            let temp = this.blog;
+            temp.created = '';
+            console.log(temp)
+            request.post("http://localhost:8081/blog/addfavoritenum",temp).then(res1=>{
+              if(res1.code === 200){
+                this.blog.favorite = this.blog.favorite+1
+              }
+            })
+
+          }
+        })
+      }
+      else{
+        let data = {
+          fid: this.user.id,
+          fblogid: this.blog.id,
+        }
+        this.ifFavourite = !this.ifFavourite
+        console.log(data)
+        request.post("http://localhost:8081/favorite/delfavoriteinfo",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+            let temp = this.blog;
+            temp.created = '';
+            request.post("http://localhost:8081/blog/delfavoritenum",temp).then(res1=>{
+              if(res1.code === 200){
+                this.blog.favorite = this.blog.favorite-1
+              }
+            })
+
+          }
+        })
+      }
+
+      this.$forceUpdate()
       let target = e.target;
       if(target.nodeName === "I"||target.nodeName === "svg"){
         target = e.target.parentNode;
@@ -106,12 +196,7 @@ export default {
     this.user = data.user
     let url = 'http://localhost:8081/blog/'+blogId
     request.get(url).then(res=>{
-      const blog = res.data
-      this.blog.id = blog.id
-      this.blog.title = blog.title
-      this.blog.userId = blog.userId
-      console.log(this.user.id)
-      console.log(this.blog.userId)
+      this.blog = res.data
       if(this.blog.userId === this.user.id){
         this.ownBlog = true;
       }else{
@@ -121,9 +206,40 @@ export default {
       var MardownIt = require("markdown-it")
       var md = new MardownIt()
 
-      var result = md.render(blog.content)
-      this.blog.content = result
+      var result = md.render(this.blog.content)
+      this.content = result
       // this.ownBlog = (blog.userId === this.$store.getters.getUser.id)
+      request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
+        if(res1.code === 200){
+          let praise = res1.data
+            for(let j = 0;j<praise.length;j++){
+              if(praise[j].pblogid === this.blog.id){
+                this.ifLike = true;
+                break;
+              }else {
+                this.ifLike = false;
+              }
+            }
+
+          this.$forceUpdate()
+        }
+      })
+
+      request.post("http://localhost:8081/favorite/getfavoriteinfo?userid="+this.user.id).then(res1=>{
+        if(res1.code === 200){
+          let favorite = res1.data
+          console.log(favorite)
+            for(let j = 0;j<favorite.length;j++){
+              if(favorite[j].fblogid === this.blog.id){
+                this.ifFavourite= true;
+                break;
+              }else {
+                this.ifFavourite = false;
+              }
+            }
+          this.$forceUpdate()
+        }
+      })
     })
   }
 }

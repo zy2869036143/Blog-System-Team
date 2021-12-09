@@ -168,18 +168,24 @@ export default {
   methods:{
     onSearch(){
       if(this.select === '1'){
-        request.post('http://localhost:8081/blog/selectByKey',this.search).then(res=>{
-          this.searchBlog = res.data;
-          console.log(this.searchBlog)
-          let data = {
-            user:this.user,
-            searchBlog:this.searchBlog,
-          }
-          this.$router.push({
-            path:`/searchBlogs/${encodeURIComponent(JSON.stringify(data))}`,
-          })
+        // request.post('http://localhost:8081/blog/selectByKey',this.search).then(res=>{
+        //   this.searchBlog = res.data;
+        //   console.log(this.searchBlog)
+        //   let data = {
+        //     user:this.user,
+        //     searchBlog:this.searchBlog,
+        //   }
+        //   this.$router.push({
+        //     path:`/searchBlogs/${encodeURIComponent(JSON.stringify(data))}`,
+        //   })
+        // })
+        let data = {
+          user:this.user,
+          searchKey:this.search,
+        }
+        this.$router.push({
+          path:`/searchBlogs/${encodeURIComponent(JSON.stringify(data))}`,
         })
-
 
       }
     },
@@ -187,6 +193,10 @@ export default {
       localStorage.setItem("user","");
       this.$router.replace("/");
       location.reload();
+      window.onbeforeunload = function (e) {
+        var storage = window.localStorage;
+        storage.clear()
+      }
     }
   }
 }

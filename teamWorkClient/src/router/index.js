@@ -19,7 +19,7 @@ export default new Router({
       component: loginView
     },
     {
-      path: '',
+      path: '/:user?',
       redirect: '/mainBlogPage/allBlogs/:user?'
     },
     {
@@ -30,6 +30,7 @@ export default new Router({
       path: '/mainBlogPage',
       component: mainBlogsPage,
       children: [
+
         {
           path: '/mainBlogPage/allBlogs/:user?',
           component: allBlogs,

@@ -75,9 +75,18 @@ export default {
   created() {
     this.page(1)
     console.log(this.$route.params.user)
-    if(this.$route.params.user){
-
-      this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    // if(this.$route.params.user){
+    //   this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    // }
+    if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
+      this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
+      this.ifLogin = true;
+    }else {
+      if(!this.$route.params.user){
+      }else{
+        this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+        localStorage.setItem('user',this.$route.params.user);
+      }
     }
 
   },
