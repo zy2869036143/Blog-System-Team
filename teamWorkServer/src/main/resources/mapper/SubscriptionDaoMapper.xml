@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.markerhub.Dao.SubscriptionDao">
+    <insert id="addsubscribe" parameterType="com.markerhub.entity.Subscription">
+        insert into m_subscription value (#{id},#{sid},#{stime})
+    </insert>
+    <delete id="delsubscribe" parameterType="com.markerhub.entity.Subscription">
+        delete from m_subscription where id = #{id} and sid = #{sid}
+    </delete>
+    <select id="getsubscribe" parameterType="INT" resultType="com.markerhub.entity.Subscription">
+        select * from m_subscribe where id = #{id}
+    </select>
+</mapper>
