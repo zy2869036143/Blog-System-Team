@@ -51,6 +51,7 @@ public class CommentController {
             Comment comment1 = commentList.get(i);
             String username = userinfoService.getinfo(comment1.getUserId()).getUsername();
             comment1.setUsername(username);
+            comment1.setFollowUsername(comment.getUsername());
             total.add(commentList.get(i));
             addd(id, commentList.get(i), total);
         }
