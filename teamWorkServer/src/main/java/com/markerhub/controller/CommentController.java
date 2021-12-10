@@ -59,9 +59,8 @@ public class CommentController {
     @PostMapping("/save")
     public Result saveComment(@Validated @RequestBody Comment comment){
 
-        comment.setTime(LocalDateTime.now().toString());
+        comment.setTime(LocalDateTime.now());
         commentService.save(comment);
-
         return Result.succ("success");
 
     }
