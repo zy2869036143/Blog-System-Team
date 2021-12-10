@@ -25,5 +25,6 @@ public class Comment implements Serializable {
     private String content;
     private Long follow;
 
+    private String username;
     private String time;
 }

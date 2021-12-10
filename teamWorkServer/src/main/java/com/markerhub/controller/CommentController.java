@@ -3,19 +3,21 @@ import com.markerhub.common.dto.CommentDeleteRequest;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Comment;
 import com.markerhub.service.CommentService;
+import com.markerhub.service.UserService;
+import com.markerhub.service.UserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.*;
-
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
 
     @Autowired
     CommentService commentService;
+    @Autowired
+    UserinfoService userinfoService;
 
     @PostMapping("/get")
     public Result getComment(@RequestParam("id") Long id){
@@ -32,6 +34,9 @@ public class CommentController {
         for (int i=0; i < commentList.size(); ++i){
             ArrayList<Comment> onePieComment = new ArrayList<Comment>();
             totalComments.add(onePieComment);
+            Comment comment1 = commentList.get(i);
+            String username = userinfoService.getinfo(comment1.getUserId()).getUsername();
+            comment1.setUsername(username);
             onePieComment.add(commentList.get(i));
             addd(id, commentList.get(i), onePieComment);
            // List<Comment> followComments = commentService.getByCommentById(id, commentList.get(i).getId());
@@ -43,6 +48,9 @@ public class CommentController {
         List<Comment> commentList = commentService.getByCommentById(id, comment.getId());
         if (commentList.size()==0) return;
         for (int i=0; i < commentList.size(); ++i){
+            Comment comment1 = commentList.get(i);
+            String username = userinfoService.getinfo(comment1.getUserId()).getUsername();
+            comment1.setUsername(username);
             total.add(commentList.get(i));
             addd(id, commentList.get(i), total);
         }
@@ -53,6 +61,7 @@ public class CommentController {
 
         comment.setTime(LocalDateTime.now().toString());
         commentService.save(comment);
+
         return Result.succ("success");
 
     }
@@ -70,6 +79,4 @@ public class CommentController {
             return Result.fail("评论不存在");
         }
     }
-
-
 }
