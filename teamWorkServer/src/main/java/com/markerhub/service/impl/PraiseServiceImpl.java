@@ -1,12 +1,17 @@
 package com.markerhub.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.markerhub.Dao.PraiseDao;
+import com.markerhub.entity.Comment;
 import com.markerhub.entity.Praise;
+import com.markerhub.mapper.CommentMapper;
+import com.markerhub.mapper.PraiseMapper;
 import com.markerhub.service.PraiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service("PraiseService")
@@ -26,8 +31,10 @@ public class PraiseServiceImpl implements PraiseService {
     }
 
     @Override
-    public List<Praise> getpraise(String username){
-        return praiseDao.getpraise(username);
+    public List<Praise> getpraise(int userid){
+        List<Praise> p = praiseDao.getpraise(userid);
+        return p;
     }
+
 
 }

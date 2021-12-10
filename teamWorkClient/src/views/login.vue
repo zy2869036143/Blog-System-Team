@@ -138,6 +138,7 @@ export default {
             message:"登录成功"
           })
           let user = res.data;
+          console.log(user)
           this.$router.push({
             path:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(user))}`,
           })

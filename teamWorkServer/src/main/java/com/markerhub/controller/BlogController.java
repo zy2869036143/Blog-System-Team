@@ -37,7 +37,7 @@ public class BlogController {
 
         JSONObject jsonObject = JSONObject.fromObject(data);
         Integer currentPage = jsonObject.getInt("currentPage");
-        Page page = new Page(currentPage, 5);
+        Page page = new Page(currentPage, 6);
         IPage pageData = blogService.page(page, new QueryWrapper<Blog>().orderByDesc("created"));
 
         return Result.succ(pageData);
@@ -95,10 +95,10 @@ public class BlogController {
     }
 
     @PostMapping("/blog/addpraisenum")
-    public Result addpraisenum(@RequestBody Blog blog){
+    public Result addpraisenum(@Validated @RequestBody Blog blog){
        int praise = blog.getPraise();
        blog.setPraise(++praise);
-       blogService.updateblog(blog);
+       blogService.saveOrUpdate(blog);
        return Result.succ("添加博客点赞数成功");
 
     }
@@ -108,18 +108,47 @@ public class BlogController {
         int praise = blog.getPraise();
         praise--;
         blog.setPraise(praise);
-        blogService.updateblog(blog);
+        blogService.saveOrUpdate(blog);
         return Result.succ("减少博客点赞数成功");
 
     }
 
     @PostMapping("/blog/getuserpraiseblog")
-    public Result getuserpraises(String username){
-        List<Blog> pblogs = blogService.getByname(username);
+    public Result getuserpraises(int userid){
+        List<Blog> pblogs = blogService.getpraiseByid(userid);
         if (pblogs.size()==0){
             return Result.succ("此用户无点赞博客");
         }else {
             return Result.succ(200,"获取用户点赞博客成功",pblogs);
+        }
+    }
+
+    @PostMapping("/blog/addfavoritenum")
+    public Result addfavoritenum(@RequestBody Blog blog){
+        int favorite = blog.getFavorite();
+        blog.setFavorite(++favorite);
+        blogService.saveOrUpdate(blog);
+        return Result.succ("添加博客收藏数成功");
+
+    }
+
+    @PostMapping("/blog/delfavoritenum")
+    public Result delfavoritenum(@RequestBody Blog blog){
+        int favorite = blog.getFavorite();
+        favorite--;
+        blog.setFavorite(favorite);
+        blogService.saveOrUpdate(blog);
+        return Result.succ("减少博客收藏数成功");
+
+    }
+
+    @PostMapping("/blog/getuserfavoriteblog")
+    public Result getuserfavorites(int userid){
+        List<Blog> fblogs = blogService.getfavoriteByid(userid);
+        if (fblogs.size()==0){
+            return Result.succ("此用户无收藏博客");
+        }else {
+            return Result.succ(200,"获取用户收藏博客成功",fblogs);
         }
 
 

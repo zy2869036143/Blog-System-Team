@@ -10,5 +10,6 @@ public interface BlogDao {
     List<Blog> getblogByKey(String key);
     List<Blog> getblogs();
     void updateblog(Blog blog);
-    List<Blog> getByname(String username);
+    List<Blog> getpraiseByid(int id);
+    List<Blog> getfavoriteByid(int id);
 }
