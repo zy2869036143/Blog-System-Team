@@ -18,20 +18,77 @@
       <el-button circle v-if="ifComment" type="info" icon="el-icon-pinglun" @click.native="comment($event)" size="mini"></el-button>
       <div v-if="ifComment">
         <h3>发表你的评论：</h3>
-        <el-input type="textarea" v-model="this.yourComment"></el-input>
-        <el-button size="mini" style="float: right;margin-top: 10px;margin-bottom: 10px" type="primary">确定</el-button>
+        <el-input type="textarea" v-model="yourComment"></el-input>
+        <el-button size="mini" style="float: right;margin-top: 10px;margin-bottom: 10px" type="primary" @click="onComment(0,yourComment)">确定</el-button>
       </div>
 
 
     </el-card>
-    <el-card style="margin-top: 20px">
-      <h1>评论：</h1>
-      <el-card style="margin-bottom: 10px" shadow="hover" v-for="comment in comments" :key="comment.id">
-        <h5>{{comment.who}}</h5>
-        <h3>
-          {{comment.content}}
-        </h3>
-      </el-card>
+    <el-card style="margin-top: 20px" class="comments-container">
+<!--      <h1>评论：</h1>-->
+<!--      <el-card style="margin-bottom: 10px" shadow="hover" v-for="comment in comments" :key="comment.id">-->
+<!--        <h5>{{comment.who}}</h5>-->
+<!--        <h3>-->
+<!--          {{comment.content}}-->
+<!--        </h3>-->
+<!--      </el-card>-->
+      <div >
+        <h3>评论卡：</h3>
+        <ul id="comments-list" class="comments-list">
+          <li v-for="(comment) in comments" >
+            <div class="comment-main-level">
+              <!-- Avatar -->
+<!--              <div class="comment-avatar"></div>-->
+              <!-- Contenedor del Comentario -->
+              <div class="comment-box">
+                <div class="comment-head">
+                  <h6 class="comment-name by-author" v-if="comment[0].userId === blog.userId">{{comment[0].username}}</h6>
+                  <h6 v-else class="comment-name">{{comment[0].userId}}</h6>
+                </div>
+                <div class="comment-content">
+                 {{comment[0].content}}
+                </div>
+                <el-button type="text" v-if="!comment[0].ifReply"  icon="el-icon-pinglun" @click.native="inComment($event,comment[0])" size="mini" style="margin: 10px;color: black">回复</el-button>
+                <el-button type="text" v-if="comment[0].ifReply"  icon="el-icon-pinglun" @click.native="inComment($event,comment[0])" size="mini" style="margin: 13px">回复</el-button>
+
+                <el-button type="text" icon="el-icon-delete" @click.native="deleteComment(comment[0].id)" size="mini" style="margin: 10px;color: red;" v-if="comment[0].userId===user.id">删除</el-button>
+                <div v-if="comment[0].ifReply" style="margin-left: 13px;margin-right: 13px">
+                  <el-input type="textarea" v-model="reply"></el-input>
+                  <el-button size="mini" style="float: right;margin-top: 10px;margin-bottom: 10px" type="primary" @click="onComment(comment[0].id,reply)">确定</el-button>
+                </div>
+              </div>
+            </div>
+            <!-- Respuestas de los comentarios -->
+            <ul class="comments-list reply-list">
+              <li v-for="i in comment.length-1" :key="i">
+                <!-- Avatar -->
+                <!-- Contenedor del Comentario -->
+                <div class="comment-box">
+                  <div class="comment-head">
+                    <h6 class="comment-name by-author" v-if="comment[i].userId === blog.userId">{{comment[i].username}}</h6>
+                    <h6 v-else class="comment-name">{{comment[i].userId}}</h6>
+                    <h6 v-if="comment[i].follow === comment[i-1].id&&i!==1"  style="color: #8c939d;font-size: 10px;float: left;margin-right: 10px;margin-top: 34px">回复{{ comment[i-1].followUsername }}</h6>
+                  </div>
+                  <div class="comment-content">
+                    {{comment[i].content}}
+                  </div>
+                  <el-button type="text" v-if="!comment[i].ifReply"  icon="el-icon-pinglun" @click.native="inComment($event,comment[i])" size="mini" style="margin: 10px;color: black">回复</el-button>
+                  <el-button type="text" v-if="comment[i].ifReply"  icon="el-icon-pinglun" @click.native="inComment($event,comment[i])" size="mini" style="margin: 13px">回复</el-button>
+
+                  <el-button type="text" icon="el-icon-delete" @click.native="deleteComment(comment[i].id)" size="mini" style="margin: 10px;color: red;" v-if="comment[i].userId===user.id">删除</el-button>
+                  <div v-if="comment[i].ifReply" style="margin-left: 13px;margin-right: 13px">
+                    <el-input type="textarea" v-model="reply"></el-input>
+                    <el-button size="mini" style="float: right;margin-top: 10px;margin-bottom: 10px" type="primary" @click="onComment(comment[i].id,reply)">确定</el-button>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+
     </el-card>
 
   </div>
@@ -45,15 +102,45 @@ export default {
   data() {
     return {
       content:'',
+      reply:'',
       ifComment:false,
       ifLike:false,
       ifFavourite:false,
       yourComment:'',
-      comments:[{
-        content:'23213ee',
-        id:'1',
-        who:'321313',
-      }],
+      comments:[
+        [
+        {
+          id: '6',
+          userId: '6',
+          blogId:'1',
+          content:"23131232",
+          follow:'0',
+          username:'ccc',
+        }
+      ],
+        [
+          {
+            id: '6',
+            userId: '2',
+            blogId:'1',
+            content:"23131vcvcvcv232",
+            follow:'0',
+          },
+          {
+            id: '6',
+            userId: '4',
+            blogId:'1',
+            content:"adsdsdasds",
+            follow:'2',
+          },
+          {
+            id: '6',
+            userId: '4',
+            blogId:'1',
+            content:"adsdsdweqweqeqwewqeasds",
+            follow:'2',
+          },
+        ]],
       blog: {
         id: "1",
         title: "111111",
@@ -189,6 +276,76 @@ export default {
       }
       target.blur();
     },
+    inComment(e,comment1) {
+      // this.ifInComment = !this.ifInComment
+      comment1.ifReply = !comment1.ifReply;
+      this.$forceUpdate()
+      let target = e.target;
+      if(target.nodeName === "I"||target.nodeName === "svg"){
+        target = e.target.parentNode;
+      }
+      target.blur();
+    },
+    onComment(follow,yourComment){
+      let commentData = {
+        userId: this.user.id,
+        blogId: this.blog.id,
+        content: yourComment,
+        follow: follow,
+      }
+      request.post("http://localhost:8081/comment/save",commentData).then(res=>{
+        if(res.code === 200){
+          this.$message({
+            type: "success",
+            message: res.msg,
+          })
+          this.yourComment = ''
+          this.reply = ''
+          request.post("http://localhost:8081/comment/get?id="+this.blog.id).then(res1=>{
+            if(res1.code === 200){
+              this.comments = res1.data;
+              for(let i = 0;i<this.comments.length;i++){
+                for(let j = 0;j<this.comments[i].length;j++){
+                  this.comments[i][j].ifReply = false;
+                }
+              }
+            }
+          })
+        }
+      })
+    },
+    deleteComment(commentId){
+      let deleteData = {
+        userId: this.user.id,
+        commentId: commentId,
+      }
+      console.log(deleteData)
+      request.post("http://localhost:8081/comment/delete",deleteData).then(res=>{
+        if(res.code===200){
+          this.$message({
+            type:"success",
+            message:"删除评论成功"
+          })
+          request.post("http://localhost:8081/comment/get?id="+this.blog.id).then(res1=>{
+            if(res1.code === 200){
+              this.comments = res1.data;
+              for(let i = 0;i<this.comments.length;i++){
+                for(let j = 0;j<this.comments[i].length;j++){
+                  this.comments[i][j].ifReply = false;
+                }
+              }
+              console.log(this.comments)
+            }
+          })
+        }else {
+          this.$message({
+            type:"error",
+            message:res.msg,
+          })
+        }
+      })
+
+    }
   },
   created() {
     let data =  JSON.parse(decodeURIComponent(this.$route.params.data))
@@ -240,6 +397,22 @@ export default {
           this.$forceUpdate()
         }
       })
+
+      let commentData = {
+        id: blogId,
+      }
+
+      request.post("http://localhost:8081/comment/get?id="+blogId).then(res1=>{
+        if(res1.code === 200){
+          this.comments = res1.data;
+          for(let i = 0;i<this.comments.length;i++){
+            for(let j = 0;j<this.comments[i].length;j++){
+              this.comments[i][j].ifReply = false;
+            }
+          }
+          console.log(this.comments)
+        }
+      })
     })
   }
 }
@@ -251,6 +424,241 @@ export default {
   width: 100%;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.comments-container {
+  margin: 60px auto 15px;
+  width: 768px;
+}
+
+.comments-container h1 {
+  font-size: 36px;
+  color: #283035;
+  font-weight: 400;
+}
+
+.comments-container h1 a {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.comments-list {
+  margin-top: 30px;
+  position: relative;
+}
+
+.comments-list:before {
+  content: '';
+  width: 2px;
+  height: 100%;
+  background: #c7cacb;
+  position: absolute;
+  left: 32px;
+  top: 0;
+}
+
+.comments-list:after {
+  content: '';
+  position: absolute;
+  background: #c7cacb;
+  bottom: 0;
+  left: 27px;
+  width: 7px;
+  height: 7px;
+  border: 3px solid #dee1e3;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.reply-list:before, .reply-list:after {display: none;}
+.reply-list li:before {
+  content: '';
+  width: 60px;
+  height: 2px;
+  background: #c7cacb;
+  position: absolute;
+  top: 25px;
+  left: -55px;
+}
+
+
+.comments-list li {
+  margin-bottom: 15px;
+  display: block;
+  position: relative;
+}
+
+.comments-list li:after {
+  content: '';
+  display: block;
+  clear: both;
+  height: 0;
+  width: 0;
+}
+
+.reply-list {
+  padding-left: 88px;
+  clear: both;
+  margin-top: 15px;
+}
+.comments-list .comment-avatar {
+  width: 65px;
+  height: 65px;
+  position: relative;
+  float: left;
+  border: 3px solid #FFF;
+  overflow: hidden;
+}
+
+.comments-list .comment-avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.reply-list .comment-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+.comment-main-level:after {
+  content: '';
+  width: 0;
+  height: 0;
+  display: block;
+  clear: both;
+}
+.comments-list .comment-box {
+  width: 680px;
+  float: right;
+  position: relative;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+}
+
+.comments-list .comment-box:before, .comments-list .comment-box:after {
+  content: '';
+  height: 0;
+  width: 0;
+  position: absolute;
+  display: block;
+  border-width: 10px 12px 10px 0;
+  border-style: solid;
+  border-color: transparent #FCFCFC;
+  top: 8px;
+  left: -11px;
+}
+
+.comments-list .comment-box:before {
+  border-width: 11px 13px 11px 0;
+  border-color: transparent rgba(0,0,0,0.05);
+  left: -12px;
+}
+
+.reply-list .comment-box {
+  width: 610px;
+}
+.comment-box .comment-head {
+  background: #FCFCFC;
+  padding: 10px 12px;
+  border-bottom: 1px solid #E5E5E5;
+  overflow: hidden;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.comment-box .comment-head i {
+  float: right;
+  margin-left: 14px;
+  position: relative;
+  top: 2px;
+  color: #A6A6A6;
+  cursor: pointer;
+  -webkit-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+.comment-box .comment-head i:hover {
+  color: #03658c;
+}
+
+.comment-box .comment-name {
+  color: #283035;
+  font-size: 14px;
+  font-weight: 700;
+  float: left;
+  margin-right: 10px;
+}
+
+.comment-box .comment-name a {
+  color: #283035;
+}
+
+.comment-box .comment-head span {
+  float: left;
+  color: #999;
+  font-size: 13px;
+  position: relative;
+  top: 1px;
+}
+
+.comment-box .comment-content {
+  background: #FFF;
+  padding: 12px;
+  font-size: 15px;
+  color: #595959;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+
+.comment-box .comment-name.by-author, .comment-box .comment-name.by-author a {color: #03658c;}
+.comment-box .comment-name.by-author:after {
+  content: '作者';
+  background: #03658c;
+  color: #FFF;
+  font-size: 12px;
+  padding: 3px 5px;
+  font-weight: 700;
+  margin-left: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+/** =====================
+ * Responsive
+ ========================*/
+@media only screen and (max-width: 766px) {
+  .comments-container {
+    width: 480px;
+  }
+
+  .comments-list .comment-box {
+    width: 390px;
+  }
+
+  .reply-list .comment-box {
+    width: 320px;
+  }
+}
+
+
+a {
+  color: #03658c;
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+body {
+  font-family: 'Roboto', Arial, Helvetica, Sans-serif, Verdana,serif;
+  background: #dee1e3;
 }
 
 </style>
