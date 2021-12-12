@@ -18,6 +18,8 @@ import 'mavon-editor/dist/css/index.css'
 Vue.use(mavonEditor)
 /* eslint-disable no-new */
 import "../src/style/card.css"
+import "../src/js/jquery-3.5.1"
+import "../src/js/jquery-3.5.1.min"
 Vue.component('card', {
   template: `
     <div class="card-wrap"

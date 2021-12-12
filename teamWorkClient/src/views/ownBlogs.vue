@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-timeline>
+    <el-timeline v-if="blogs.length>0">
 
       <el-timeline-item :timestamp="blog.created" placement="top" v-for="blog in blogs" :key="blog.id">
         <el-card @click.native="cardPush(blog)" shadow="hover">
@@ -13,6 +13,8 @@
       </el-timeline-item>
 
     </el-timeline>
+
+    <el-empty v-else description="还没发表博客哦~"></el-empty>
 
 
 
@@ -78,5 +80,8 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
-
+/deep/ .el-timeline-item__timestamp{
+  color: black;
+  font-size: 5px;
+}
 </style>

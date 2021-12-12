@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(blog,index) in blogs">
+    <div v-if="blogs!=null" v-for="(blog,index) in blogs">
       <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(blog)">
         <h1>{{blog.title}}</h1>
         <h6>{{blog.created}}</h6>
@@ -19,7 +19,7 @@
 
       </el-card>
     </div>
-
+    <el-empty v-if="blogs==null" description="暂无相关博客"></el-empty>
 
 <!--    <el-pagination class="mpage"-->
 <!--                   background-->

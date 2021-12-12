@@ -1,13 +1,15 @@
 <template>
   <div style="margin-left: 50px">
-    <el-pagination class="mpage"
-                   background
-                   layout="prev, pager, next"
-                   :current-page="currentPage"
-                   :page-size="pageSize"
-                   :total="total"
-                   @current-change=page>
-    </el-pagination>
+      <el-pagination class="mpage"
+                     small
+                     background
+                     layout="prev, pager, next"
+                     :current-page="currentPage"
+                     :page-size="pageSize"
+                     :total="total"
+                     @current-change=page>
+      </el-pagination>
+
 
     <div v-for="(blog,index) in blogs" class="container">
       <div>
@@ -265,6 +267,28 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
+
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled) {
+  background-color: rgba(255,255,255,0);
+  color: black;
+}
+/deep/ .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #3a8ee6;
+  border-radius: 360px;
+
+  color: white;
+}
+/deep/ .el-pagination.is-background .btn-prev{
+  background-color: rgba(143,203,255,0);
+  color: #0a2c50;
+}
+/deep/ .el-pagination.is-background .btn-next{
+  background-color: rgba(143,203,255,0);
+  color: #0a2c50;
+}
+/deep/ .el-pagination.is-background .number{
+  color: white;
+}
 .svg {
   width: 18px; height: 18px;
   vertical-align: -0.2em;
@@ -278,9 +302,6 @@ p {
 
 h1 + p, p + p {
   margin-top: 10px;
-}
-
-.container {
 }
 
 .card-wrap {

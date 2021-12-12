@@ -34,7 +34,7 @@
 <!--      </el-card>-->
       <div >
         <h3>评论卡：</h3>
-        <ul id="comments-list" class="comments-list">
+        <ul v-if="comments.length>0" id="comments-list" class="comments-list">
           <li v-for="(comment) in comments" >
             <div class="comment-main-level">
               <!-- Avatar -->
@@ -43,7 +43,7 @@
               <div class="comment-box">
                 <div class="comment-head">
                   <h6 class="comment-name by-author" v-if="comment[0].userId === blog.userId">{{comment[0].username}}</h6>
-                  <h6 v-else class="comment-name">{{comment[0].userId}}</h6>
+                  <h6 v-else class="comment-name">{{comment[0].username}}</h6>
                 </div>
                 <div class="comment-content">
                  {{comment[0].content}}
@@ -66,8 +66,8 @@
                 <div class="comment-box">
                   <div class="comment-head">
                     <h6 class="comment-name by-author" v-if="comment[i].userId === blog.userId">{{comment[i].username}}</h6>
-                    <h6 v-else class="comment-name">{{comment[i].userId}}</h6>
-                    <h6 v-if="comment[i].follow === comment[i-1].id&&i!==1"  style="color: #8c939d;font-size: 10px;float: left;margin-right: 10px;margin-top: 34px">回复{{ comment[i-1].followUsername }}</h6>
+                    <h6 v-else class="comment-name">{{comment[i].username}}</h6>
+                    <h6 v-if="comment[i].followUsername&&comment[i].follow !== comment[0].id"  style="color: #8c939d;font-size: 10px;float: left;margin-right: 10px;margin-top: 34px">回复{{ comment[i].followUsername }}</h6>
                   </div>
                   <div class="comment-content">
                     {{comment[i].content}}
@@ -87,6 +87,10 @@
           </li>
 
         </ul>
+
+        <div v-else>
+          <el-empty description="暂无评论"></el-empty>
+        </div>
       </div>
 
     </el-card>

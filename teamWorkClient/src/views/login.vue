@@ -1,33 +1,27 @@
 <template>
   <div class="login_container">
-    <div class="box">
-      <div class="login_box">
+      <div class="wrapper">
         <!-- 登录表单区域 -->
-        <el-form size="mini" v-model="form" label='登录你的博客'>
-          <p class="title">登录你的博客</p>
-          <el-form-item>
-            <el-input placeholder="昵称" v-model="form.username" prefix-icon="el-icon-user" size="medium"></el-input>
-          </el-form-item>
-          <!-- 密码 -->
-          <el-form-item >
-            <el-input placeholder="密码" show-password v-model="form.password" prefix-icon="el-icon-key
-" size="medium"></el-input>
-          </el-form-item>
-          <!-- 记住密码 -->
-          <el-form-item style="margin-top:-5px">
-            <!--          <el-checkbox label="记住密码" class="rememberMe" v-model="form.ifRemember"></el-checkbox>-->
-            <router-link to="/login/register" class="id" style="margin-left:0px">没账号？快注册！</router-link>
-          </el-form-item>
-          <el-form-item style="margin-top:-15px">
+        <div class="container1">
+          <p class="title">{{ textLogin }}</p>
+          <form size="mini" v-model="form" label='登录你的博客'class="form">
 
-          </el-form-item>
-          <!-- 登录按钮 -->
-          <el-form-item style="margin-top:-5px">
-            <el-button type="primary" @click="login" size="medium">登录</el-button>
-          </el-form-item>
-        </el-form>
+            <input placeholder="昵称" v-model="form.username" prefix-icon="el-icon-user"type="text"></input>
+
+            <input placeholder="密码" type="password" v-model="form.password" prefix-icon="el-icon-key
+" style="margin-bottom: 10px"></input>
+            <router-link to="/login/register" class="id" style="margin-bottom:40px">没账号？快注册！</router-link>
+            <div>
+
+              <button @click="login($event)" id="login-button" type="submit">登录</button>
+            </div>
+          </form>
+        </div>
+<!--        <div v-else class="title">-->
+<!--          <p style="position: relative;font-size: 50px">{{ textLogin }}</p>-->
+<!--        </div>-->
+
       </div>
-    </div>
 
     <vue-particles
       color="#fff"
@@ -51,14 +45,104 @@
     </vue-particles>
   </div>
 </template>
+
 <style scoped>
+@-webkit-keyframes square {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-700px) rotate(600deg);
+  }
+}
+@keyframes square {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-700px) rotate(600deg);
+  }
+}
+.container1 {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 80px 0;
+  height: 400px;
+}
+.container1 h1 {
+  font-size: 40px;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
+  font-weight: 200;
+}
+.wrapper {
+  width: 400px;
+  height: 400px;
+  background-color: rgba(65, 93, 125, 0);
+  border-radius: 5px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.form-success .container h1 {
+  transform: translateY(85px);
+}
+form button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  background-color: white;
+  border: 0;
+  padding: 10px 15px;
+  color: #53e3a6;
+  border-radius: 3px;
+  width: 400px;
+  cursor: pointer;
+  font-size: 18px;
+  transition-duration: 0.25s;
+}
+button{
+  margin-top: 15px;
+}
+form button:hover {
+  background-color: #f5f7f9;
+}
+form input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 250px;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin: 0 auto 17px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  transition-duration: 0.25s;
+  font-weight: 300;
+}
+form input:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+form input:focus {
+  background-color: white;
+  width: 300px;
+  color: #53e3a6;
+}
 .login_container {
-  background-image: linear-gradient(-180deg, #f5e3e3 0%, #74a2d7 100%);
+  background-image: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);;
   width: 100%;
   height: 100%;
   position: fixed;
   background-size: 100% 100%;
   height: 100%;
+  text-align: center;
 }
 .login_box {
   width: 400px;
@@ -69,6 +153,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
 }
 .el-form {
   padding: 32px;
@@ -77,35 +162,29 @@
   width: 100%;
   box-sizing: border-box;
 }
-.el-button {
-  width: 100%;
-}
-.code {
-  width: 45%;
-}
-.rememberMe {
-  color: #fff;
-}
 .id{
   color: #fff;
-}
-.right /deep/ .el-form-item__label{
-  text-align: end;
+  text-align: center;
 }
 .title{
   color: #0a2c50;
-  font-size: 20px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+.addTitle{
+  font-size: 50px;
   text-align: center;
   padding-bottom: 10px;
 }
 </style>
 <script>
 import request from "../util/request";
-
 export default {
   data() {
     return {
       identification: '',
+      textLogin:'登录你的博客',
+      isShow:true,
       form: {
         username:'',
         name: '',
@@ -114,8 +193,16 @@ export default {
       }
     }
   },
+
   methods:{
-    async login(){
+    async login(event){
+      // $("#login-button").click(function(event){
+      //
+      // });
+
+      event.preventDefault();
+
+
       let flag = true;
       if(this.form.username === ''){
         await this.$message({
@@ -138,10 +225,19 @@ export default {
             message:"登录成功"
           })
           let user = res.data;
+          this.isShow = false
           console.log(user)
-          this.$router.push({
-            path:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(user))}`,
-          })
+          this.textLogin = "欢迎 "+user.username
+          $('form').fadeOut(500);
+          $('title').addClass('addTitle');
+          $('wrapper').addClass('form-success');
+          setTimeout(()=>{
+            this.$router.push({
+              path:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(user))}`,
+            })
+          },1000)
+
+
         }else{
           this.$message({
             type:"error",
