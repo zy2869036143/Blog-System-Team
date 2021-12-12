@@ -2,6 +2,7 @@ package com.markerhub.controller;
 
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Subscription;
+import com.markerhub.entity.User;
 import com.markerhub.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class SubscriptionController {
 
     @PostMapping("/getsubscribe")
     public Result getsubscribe(int id){
-        List<Subscription> subscriptionList = subscriptionService.getsubscribe(id);
+        List<User> subscriptionList = subscriptionService.getsubscribe(id);
         return Result.succ(200,"获取用户id："+id+"关注信息成功",subscriptionList);
     }
 }

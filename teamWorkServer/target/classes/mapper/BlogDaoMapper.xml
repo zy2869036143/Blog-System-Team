@@ -5,7 +5,7 @@
         select * from m_blog
     </select>
     <update id="updateblog" parameterType="com.markerhub.entity.Blog">
-        update m_blog set praise = #{praise} and favorite = #{favorite} where id = #{id}
+        update m_blog set praise = #{praise},favorite = #{favorite} where id = #{id}
     </update>
     <select id="getpraiseByid" parameterType="int" resultType="com.markerhub.entity.Blog">
         select * from m_blog where id = (select pblogid from m_praise where pid = #{id})
