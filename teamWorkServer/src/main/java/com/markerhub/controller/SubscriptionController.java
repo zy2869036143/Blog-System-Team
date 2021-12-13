@@ -42,7 +42,7 @@ public class SubscriptionController {
     @PostMapping("/getAllsubscribe")
     public Result getALLsubscribenum(){
         List<User> alluser = subscriptionService.getalluser();
-        List<List<Subscription>> list = null;
+        List<List<Subscription>> list = new ArrayList<>();
         for (int i = 0; i < alluser.size(); i++) {
             List<Subscription> subList = subscriptionService.getALLsubscribe(alluser.get(i));
 
