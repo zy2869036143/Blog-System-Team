@@ -7,10 +7,25 @@
     <delete id="delsubscribe" parameterType="com.markerhub.entity.Subscription">
         delete from m_subscription where id = #{id} and sid = #{sid}
     </delete>
-    <select id="getsubscribe" parameterType="INT" resultType="com.markerhub.entity.Subscription">
-        select * from m_user where id = (select sid from m_subscription where id = #{id})
+    <select id="getsubscribe" resultType="com.markerhub.entity.User">
+        select * from m_user where id in
+        <foreach collection="idlist" index="index" item="list" open="(" separator="," close=")">
+            #{list.sid}
+        </foreach>
     </select>
-    <select id="getAllsubscribe" parameterType="INT" resultType="com.markerhub.entity.Subscription">
-        select * from m_user where id =(select id from m_subscription where sid = (select id from m_user))
+    <select id="getsid" parameterType="int" resultType="com.markerhub.entity.Subscription">
+        select * from m_subscription where id = #{id}
+    </select>
+    <select id="getalluser" resultType="com.markerhub.entity.User">
+        select * from m_user
+    </select>
+    <select id="getALLsubscribe" resultType="com.markerhub.entity.Subscription" parameterType="com.markerhub.entity.User">
+        select * from m_subscription where sid = #{id}
+    </select>
+    <select id="getusersubedlist" resultType="com.markerhub.entity.User">
+        select * from m_user where id in
+        <foreach collection="sublist" index="index" item="list" open="(" separator="," close=")">
+            #{list.id}
+        </foreach>
     </select>
 </mapper>

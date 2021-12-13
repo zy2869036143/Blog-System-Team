@@ -2,6 +2,8 @@ package com.markerhub.service.impl;
 
 import com.markerhub.Dao.BlogDao;
 import com.markerhub.entity.Blog;
+import com.markerhub.entity.Favorite;
+import com.markerhub.entity.Praise;
 import com.markerhub.mapper.BlogMapper;
 import com.markerhub.service.BlogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -44,12 +46,22 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public List<Blog> getpraiseByid(int id){
-        return blogDao.getpraiseByid(id);
+    public List<Praise> getpraiseinfoByid(int id){
+        return blogDao.getpraiseinfoByid(id);
     }
 
     @Override
-    public List<Blog> getfavoriteByid(int id){
-        return blogDao.getpraiseByid(id);
+    public List<Favorite> getfavoriteinfoByid(int id){
+        return blogDao.getfavoriteinfoByid(id);
+    }
+
+    @Override
+    public List<Blog> getpraiseByid(List<Praise> list){
+        return blogDao.getpraiseByid(list);
+    }
+
+    @Override
+    public List<Blog> getfavoriteByid(List<Favorite> list){
+        return blogDao.getfavoriteByid(list);
     }
 }

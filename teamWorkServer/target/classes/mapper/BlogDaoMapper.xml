@@ -7,11 +7,23 @@
     <update id="updateblog" parameterType="com.markerhub.entity.Blog">
         update m_blog set praise = #{praise},favorite = #{favorite} where id = #{id}
     </update>
-    <select id="getpraiseByid" parameterType="int" resultType="com.markerhub.entity.Blog">
-        select * from m_blog where id = (select pblogid from m_praise where pid = #{id})
+    <select id="getpraiseByid" resultType="com.markerhub.entity.Blog">
+        select * from m_blog where id in
+        <foreach collection="plist" index="index" item="list" open="(" separator="," close=")">
+            #{list.pblogid}
+        </foreach>
     </select>
-    <select id="getfavoriteByid" parameterType="int" resultType="com.markerhub.entity.Blog">
-        select * from m_blog where id = (select f_blogid from m_favorite where f_id = #{id})
+    <select id="getfavoriteByid" resultType="com.markerhub.entity.Blog">
+        select * from m_blog where id in
+        <foreach collection="plist" index="index" item="list" open="(" separator="," close=")">
+            #{list.fblogid}
+        </foreach>
+    </select>
+    <select id="getpraiseinfoByid" parameterType="int" resultType="com.markerhub.entity.Praise">
+        select * from m_praise where pid = #{id}
+    </select>
+    <select id="getfavoriteinfoByid" parameterType="int" resultType="com.markerhub.entity.Favorite">
+        select * from m_favorite where fid = #{id}
     </select>
 
 </mapper>

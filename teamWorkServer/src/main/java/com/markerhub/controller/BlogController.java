@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Blog;
+import com.markerhub.entity.Favorite;
+import com.markerhub.entity.Praise;
 import com.markerhub.service.BlogService;
 import com.markerhub.util.ShiroUtil;
 import net.sf.json.JSONObject;
@@ -113,15 +115,7 @@ public class BlogController {
 
     }
 
-    @PostMapping("/blog/getuserpraiseblog")
-    public Result getuserpraises(int userid){
-        List<Blog> pblogs = blogService.getpraiseByid(userid);
-        if (pblogs.size()==0){
-            return Result.succ("此用户无点赞博客");
-        }else {
-            return Result.succ(200,"获取用户点赞博客成功",pblogs);
-        }
-    }
+
 
     @PostMapping("/blog/addfavoritenum")
     public Result addfavoritenum(@RequestBody Blog blog){
@@ -144,7 +138,8 @@ public class BlogController {
 
     @PostMapping("/blog/getuserfavoriteblog")
     public Result getuserfavorites(int userid){
-        List<Blog> fblogs = blogService.getfavoriteByid(userid);
+        List<Favorite> favoriteList = blogService.getfavoriteinfoByid(userid);
+        List<Blog> fblogs = blogService.getfavoriteByid(favoriteList);
         if (fblogs.size()==0){
             return Result.succ("此用户无收藏博客");
         }else {
@@ -154,7 +149,16 @@ public class BlogController {
 
     }
 
-
+    @PostMapping("/blog/getuserpraiseblog")
+    public Result getuserpraises(int userid){
+        List<Praise> praiseList = blogService.getpraiseinfoByid(userid);
+        List<Blog> pblogs = blogService.getpraiseByid(praiseList);
+        if (pblogs.size()==0){
+            return Result.succ("此用户无点赞博客");
+        }else {
+            return Result.succ(200,"获取用户点赞博客成功",pblogs);
+        }
+    }
 
 
 }
