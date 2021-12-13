@@ -36,4 +36,10 @@ public class SubscriptionController {
         List<User> subscriptionList = subscriptionService.getsubscribe(id);
         return Result.succ(200,"获取用户id："+id+"关注信息成功",subscriptionList);
     }
+
+    @PostMapping("/getALLsubscribenum")
+    public Result getALLsubscribenum(){
+        List<User> userList = subscriptionService.getALLsubscribe();
+        return Result.succ(200,"获取所有用户被关注数成功",userList);
+    }
 }

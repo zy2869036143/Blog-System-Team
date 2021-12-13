@@ -30,4 +30,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public List<User> getsubscribe(int id){
         return subscriptionDao.getsubscribe(id);
     }
+
+    @Override
+    public List<User> getALLsubscribe(){
+        return subscriptionDao.getALLsubscribe();
+    }
 }

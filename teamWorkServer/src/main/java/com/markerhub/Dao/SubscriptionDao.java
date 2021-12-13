@@ -11,4 +11,5 @@ public interface SubscriptionDao {
     void addsubscribe(Subscription subscription);
     void delsubscribe(Subscription subscription);
     List<User> getsubscribe(int id);
+    List<User> getALLsubscribe();
 }

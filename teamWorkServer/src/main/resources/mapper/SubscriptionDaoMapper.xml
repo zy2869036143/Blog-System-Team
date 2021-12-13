@@ -8,6 +8,9 @@
         delete from m_subscription where id = #{id} and sid = #{sid}
     </delete>
     <select id="getsubscribe" parameterType="INT" resultType="com.markerhub.entity.Subscription">
-        select * from m_user where id = (select sid from m_subscribe where id = #{id})
+        select * from m_user where id = (select sid from m_subscription where id = #{id})
+    </select>
+    <select id="getAllsubscribe" parameterType="INT" resultType="com.markerhub.entity.Subscription">
+        select * from m_user where id =(select id from m_subscription where sid = (select id from m_user))
     </select>
 </mapper>
