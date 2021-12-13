@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="m-content">
+    <div v-if="ifLogin" class="m-content">
       <h2>编写你的博客吧！</h2>
 
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -11,10 +11,20 @@
         <el-form-item label="摘要" prop="description">
           <el-input type="textarea" v-model="ruleForm.description"></el-input>
         </el-form-item>
+        <el-form-item label="博客标签分类" prop="category">
+        <div style="margin-bottom: 10px">
+          <el-tooltip v-for="(tag,index) in tags" :key="index" :content="tag.id" placement="top" effect="dark">
+            <el-button v-if="!tag.ifChosen" :icon="tag.icon" circle @click="chooseTag($event,index)"></el-button>
+            <el-button v-if="tag.ifChosen" type="primary" plain :icon="tag.icon" circle @click="chooseTag($event,index)"></el-button>
+          </el-tooltip>
 
+        </div>
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <mavon-editor v-model="ruleForm.content"></mavon-editor>
         </el-form-item>
+
+
 
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')" v-if="ifNew">立即创建</el-button>
@@ -25,7 +35,7 @@
 
     </div>
 
-
+    <el-empty v-if="!ifLogin" description="请先登录哦~"></el-empty>
 
   </div>
 </template>
@@ -39,6 +49,44 @@ export default {
       ifNew:true,
       data:{},
       user:{},
+      tagChoice:[],
+      tags:[
+        {ifChosen:false,
+        id:"python",
+        icon:"el-icon-python"
+      },
+        {
+          id:"c/c++",
+          icon:"el-icon-cyuyan",
+          ifChosen:false
+        },
+        {url:``,
+          id:"java",
+          icon:"el-icon-java",
+          ifChosen:false
+        },
+        {
+          id:"dart",
+          icon:"el-icon-dart",
+          ifChosen:false
+        },
+        {ifChosen:false,
+          id:"javaScript",
+          icon:"el-icon-js"
+        },
+        {ifChosen:false,
+          id:"swift",
+          icon:"el-icon-swift"
+        },
+        {ifChosen:false,
+          id:"c#",
+          icon:"el-icon-Cyuyan"
+        },
+        {ifChosen:false,
+          id:"其他",
+          icon:"el-icon-more-outline"
+        },],
+      ifLogin:false,
       ruleForm: {
         id: '',
         userId:'',
@@ -61,6 +109,16 @@ export default {
     };
   },
   methods: {
+    chooseTag(e,index){
+      this.tags[index].ifChosen = !this.tags[index].ifChosen;
+      this.tagChoice.push(this.tags[index].id)
+      console.log(this.tagChoice)
+      let target = e.target;
+      if(target.nodeName === "I"||target.nodeName === "svg"){
+        target = e.target.parentNode;
+      }
+      target.blur();
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -92,6 +150,7 @@ export default {
     this.user = this.data.user
     this.ruleForm.userId = this.user.id
     console.log(this.ruleForm.userId)
+
     if(blogId){
       this.ifNew = false;
     }
@@ -100,7 +159,9 @@ export default {
         type:"warning",
         message:"请先登录",
       })
+      this.ifLogin = false;
     }else{
+      this.ifLogin = true;
       let url = 'http://localhost:8081/blog/'+blogId
       request.get(url).then(res=>{
         const blog = res.data

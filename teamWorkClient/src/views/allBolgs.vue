@@ -71,6 +71,7 @@ export default {
       total: 0,
       pageSize: 5,
       user:"",
+      ifLogin:false,
     }
   },
 
@@ -85,11 +86,14 @@ export default {
       this.ifLogin = true;
     }else {
       if(!this.$route.params.user){
+        this.ifLogin = false;
       }else{
         this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
         localStorage.setItem('user',this.$route.params.user);
+        this.ifLogin = true
       }
     }
+    console.log(this.ifLogin)
 
   },
   methods: {
@@ -152,6 +156,18 @@ export default {
     },
     like(e,index,blog) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifLike[index]){
 
         let data = {
@@ -206,6 +222,18 @@ export default {
 
     favourite(e,index,blog) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifFavourite[index]){
 
         let data = {

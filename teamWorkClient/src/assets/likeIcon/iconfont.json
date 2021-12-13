@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1444812",
+      "name": "language-cpp",
+      "font_class": "language-cpp",
+      "unicode": "e7c7",
+      "unicode_decimal": 59335
+    },
+    {
+      "icon_id": "3876209",
+      "name": "swift",
+      "font_class": "swift",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "3876458",
+      "name": "python",
+      "font_class": "python",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "5961331",
+      "name": "js",
+      "font_class": "js",
+      "unicode": "ec68",
+      "unicode_decimal": 60520
+    },
+    {
+      "icon_id": "11493403",
+      "name": "java",
+      "font_class": "java",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "20784472",
+      "name": "C#语言",
+      "font_class": "Cyuyan",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "20784474",
+      "name": "c++语言",
+      "font_class": "cyuyan",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "22273385",
+      "name": "dart",
+      "font_class": "dart",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
       "icon_id": "11372687",
       "name": "评论",
       "font_class": "pinglun",

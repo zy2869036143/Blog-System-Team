@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2971293 */
-  src: url('iconfont.woff2?t=1638099798572') format('woff2'),
-       url('iconfont.woff?t=1638099798572') format('woff'),
-       url('iconfont.ttf?t=1638099798572') format('truetype');
+  src: url('iconfont.woff2?t=1639397153401') format('woff2'),
+       url('iconfont.woff?t=1639397153401') format('woff'),
+       url('iconfont.ttf?t=1639397153401') format('truetype');
 }
 
 .iconfont {
@@ -12,35 +12,86 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-[class^="el-icon-liebiao"],
-[class*="el-icon-liebiao"],
-[class^="el-icon-quanbu"],
-[class*="el-icon-quanbu"],
-[class^="el-icon-24gf-playlistHeart2"],
-[class*="el-icon-24gf-playlistHeart2"],
-[class^="el-icon-gerenziliao"],
-[class*="el-icon-gerenziliao"],
-[class^="el-icon-icon"],
-[class*="el-icon-icon"],
+
+[class^="el-icon-language-cpp"],
+[class*="el-icon-language-cpp"],
 [class^="el-icon-shoucang"],
 [class*="el-icon-shoucang"],
-[class^="el-icon-shoucang1"],
-[class*="el-icon-shoucang1"],
-[class^="el-icon-shoucang-copy"],
-[class*="el-icon-shoucang-copy"],
-[class^="el-icon-icon-copy"],
-[class*="el-icon-icon-copy"],
+[class^="el-icon-icon"],
+[class*="el-icon-icon"],
+[class^="el-icon-guanzhu"],
+[class*="el-icon-guanzhu"],
 [class^="el-icon-guanzhu-copy"],
 [class*="el-icon-guanzhu-copy"],
-[class^="el-icon-guanzhu"],
-[class*="el-icon-guanzhu"]
+[class^="el-icon-icon-copy"],
+[class*="el-icon-icon-copy"],
+[class^="el-icon-shoucang-copy"],
+[class*="el-icon-shoucang-copy"],
+[class^="el-icon-shoucang1"],
+[class*="el-icon-shoucang1"],
+[class^="el-icon-gerenziliao"],
+[class*="el-icon-gerenziliao"],
+[class^="el-icon-24gf-playlistHeart2"],
+[class*="el-icon-24gf-playlistHeart2"],
+[class^="el-icon-quanbu"],
+[class*="el-icon-quanbu"],
+[class^="el-icon-liebiao"],
+[class*="el-icon-liebiao"],
 [class^="el-icon-pinglun"],
-[class*="el-icon-pinglun"]{
+[class*="el-icon-pinglun"],
+[class^="el-icon-dart"],
+[class*="el-icon-dart"],
+[class^="el-icon-python"],
+[class*="el-icon-python"],
+[class^="el-icon-cyuyan"],
+[class*="el-icon-cyuyan"],
+[class^="el-icon-Cyuyan"],
+[class*="el-icon-Cyuyan"],
+[class^="el-icon-java"],
+[class*="el-icon-java"],
+[class^="el-icon-js"],
+[class*="el-icon-js"],
+[class^="el-icon-swift"],
+[class*="el-icon-swift"],
+[class^="el-icon-language-cpp"],
+[class*="el-icon-language-cpp"] {
   font-family: "iconfont" !important;
   font-size: 18px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-language-cpp:before {
+  content: "\e7c7";
+}
+
+.el-icon-swift:before {
+  content: "\e61e";
+}
+
+.el-icon-python:before {
+  content: "\e664";
+}
+
+.el-icon-js:before {
+  content: "\ec68";
+}
+
+.el-icon-java:before {
+  content: "\e614";
+}
+
+.el-icon-Cyuyan:before {
+  content: "\e61a";
+}
+
+.el-icon-cyuyan:before {
+  content: "\e61b";
+}
+
+.el-icon-dart:before {
+  content: "\e6ba";
 }
 
 .el-icon-pinglun:before {

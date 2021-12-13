@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-timeline v-if="blogs.length>0">
+    <el-timeline v-if="blogs.length>0 && ifLogin">
 
       <el-timeline-item :timestamp="blog.created" placement="top" v-for="blog in blogs" :key="blog.id">
         <el-card @click.native="cardPush(blog)" shadow="hover">
@@ -14,9 +14,9 @@
 
     </el-timeline>
 
-    <el-empty v-else description="还没发表博客哦~"></el-empty>
+    <el-empty v-if="blogs.length<=0&&ifLogin" description="还没发表博客哦~"></el-empty>
 
-
+    <el-empty v-if="!ifLogin" description="请先登录哦~"></el-empty>
 
 <!--    <el-pagination class="mpage"-->
 <!--                   background-->
@@ -39,7 +39,8 @@ export default {
       blogs: [],
       currentPage: 1,
       total: 0,
-      pageSize: 5
+      pageSize: 5,
+      ifLogin:false
     }
   },
    created() {
@@ -49,9 +50,11 @@ export default {
          type:"warning",
          message:"请先登录",
        })
+       this.ifLogin = false;
      }else{
        this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
        console.log(this.user);
+       this.ifLogin = true;
        let postData = {
          username: this.user.username,
        }

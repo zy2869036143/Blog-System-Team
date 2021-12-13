@@ -106,6 +106,7 @@ export default {
   data() {
     return {
       content:'',
+      ifLogin:false,
       reply:'',
       ifComment:false,
       ifLike:false,
@@ -166,6 +167,18 @@ export default {
     },
     like(e) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifLike){
 
         let data = {
@@ -219,6 +232,18 @@ export default {
 
     favourite(e) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifFavourite){
 
         let data = {
@@ -273,6 +298,18 @@ export default {
     },
     comment(e) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       this.ifComment = !this.ifComment
       let target = e.target;
       if(target.nodeName === "I"||target.nodeName === "svg"){
@@ -282,6 +319,18 @@ export default {
     },
     inComment(e,comment1) {
       // this.ifInComment = !this.ifInComment
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       comment1.ifReply = !comment1.ifReply;
       this.$forceUpdate()
       let target = e.target;
@@ -355,6 +404,12 @@ export default {
     let data =  JSON.parse(decodeURIComponent(this.$route.params.data))
     let blogId = data.blogId
     this.user = data.user
+    console.log(this.user)
+    if(this.user){
+      this.ifLogin = true
+    }else {
+      this.ifLogin = false;
+    }
     let url = 'http://localhost:8081/blog/'+blogId
     request.get(url).then(res=>{
       this.blog = res.data

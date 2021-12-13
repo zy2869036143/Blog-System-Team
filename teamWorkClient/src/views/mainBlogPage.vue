@@ -103,7 +103,7 @@ export default {
       search:'',
       searchBlog:[],
       ifLogin: false,
-      user:{},
+      user:'',
     }
   },
   created() {
@@ -138,7 +138,55 @@ export default {
             },
             id:"全部",
             icon:"el-icon-quanbu"
-          }
+          },
+          {url:``,
+            data:{
+            },
+            id:"python",
+            icon:"el-icon-python"
+          },
+          {url:``,
+            data:{
+            },
+            id:"c/c++",
+            icon:"el-icon-cyuyan"
+          },
+          {url:``,
+            data:{
+            },
+            id:"java",
+            icon:"el-icon-java"
+          },
+          {url:``,
+            data:{
+            },
+            id:"dart",
+            icon:"el-icon-dart"
+          },
+          {url:``,
+            data:{
+            },
+            id:"javaScript",
+            icon:"el-icon-js"
+          },
+          {url:``,
+            data:{
+            },
+            id:"swift",
+            icon:"el-icon-swift"
+          },
+          {url:``,
+            data:{
+            },
+            id:"c#",
+            icon:"el-icon-Cyuyan"
+          },
+          {url:``,
+            data:{
+            },
+            id:"其他",
+            icon:"el-icon-more-outline"
+          },
         ],
       },
       {

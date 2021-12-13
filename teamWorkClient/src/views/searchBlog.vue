@@ -74,8 +74,9 @@ export default {
       currentPage: 1,
       total: 0,
       pageSize: 5,
-      user:{},
+      user:'',
       search:'',
+      ifLogin:false,
     }
   },
 
@@ -98,7 +99,12 @@ export default {
       // this.blogs = data.searchBlog
       this.user = data.user;
       this.search = data.searchKey;
-
+      if(this.user){
+        this.ifLogin = true
+      }else {
+        this.ifLogin = false;
+      }
+      console.log(this.ifLogin)
       request.post('http://localhost:8081/blog/selectByKey',this.search).then(res=>{
         this.blogs = res.data;
         console.log(this.searchBlog)
@@ -153,6 +159,18 @@ export default {
 
     like(e,index,blog) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifLike[index]){
 
         let data = {
@@ -207,6 +225,18 @@ export default {
 
     favourite(e,index,blog) {
       e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
       if(!this.ifFavourite[index]){
 
         let data = {
