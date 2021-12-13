@@ -1,5 +1,6 @@
 package com.markerhub.Dao;
 
+import com.markerhub.common.dto.Label;
 import com.markerhub.entity.Blog;
 import com.markerhub.entity.Favorite;
 import com.markerhub.entity.Praise;
@@ -12,6 +13,7 @@ import java.util.List;
 public interface BlogDao {
     List<Blog> getblogByKey(String key);
     List<Blog> getblogs();
+    void updateLabel(Label label);
     void updateblog(Blog blog);
     List<Blog> getpraiseByid(@Param("plist") List<Praise> praiseList);
     List<Blog> getfavoriteByid(@Param("flist") List<Favorite> favoriteList);

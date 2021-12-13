@@ -1,15 +1,20 @@
 package com.markerhub.entity;
 
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONException;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.markerhub.common.dto.Label;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import net.sf.json.JSONObject;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.io.Writer;
 import java.time.LocalDateTime;
 
 /**
@@ -48,6 +53,6 @@ public class Blog implements Serializable {
 
     private Integer favorite;
 
-
+    private String label;
 
 }

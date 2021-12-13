@@ -6,12 +6,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.markerhub.common.dto.BlogSERequest;
+import com.markerhub.common.dto.Label;
 import com.markerhub.common.lang.Result;
 import com.markerhub.entity.Blog;
 import com.markerhub.entity.Favorite;
 import com.markerhub.entity.Praise;
+import com.markerhub.entity.User;
 import com.markerhub.service.BlogService;
+import com.markerhub.service.UserService;
 import com.markerhub.util.ShiroUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,10 +40,11 @@ public class BlogController {
 
     @Autowired
     BlogService blogService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/blogs")
     public Result list(@RequestBody String data) {
-
         JSONObject jsonObject = JSONObject.fromObject(data);
         Integer currentPage = jsonObject.getInt("currentPage");
         Page page = new Page(currentPage, 6);
@@ -45,36 +53,57 @@ public class BlogController {
         return Result.succ(pageData);
     }
 
+    @PostMapping("/blogs/getByClass")
+    public Result test(@Validated  @RequestBody Label label){
+        List<Blog> blogList =  blogService.getblogs();
+        ArrayList<Blog> result = new ArrayList<>();
+        for (int i=0; i< blogList.size(); ++i){
+            JSONArray labelArray = JSONArray.fromObject(blogList.get(i).getLabel());
+            for (int j=0 ; j < labelArray.size(); ++i){
+                if (labelArray.get(j).equals(label.getLabel())){
+                    result.add(blogList.get(i));
+                    break;
+                }
+            }
+        }
+        // System.out.println(jsonObject.getJSONArray("label"));
+        return Result.succ(result);
+    }
+
     @GetMapping("/blog/{id}")
     public Result detail(@PathVariable(name = "id") Long id) {
         Blog blog = blogService.getById(id);
         Assert.notNull(blog, "该博客已被删除");
-
-        return Result.succ(blog);
+        User user = userService.getById(blog.getUserId());
+        //blog.setUsername(user.getUsername());
+        return Result.succ(200, user.getUsername(), blog);
     }
 
 //    @RequiresAuthentication
     @PostMapping("/blog/edit")
-    public Result edit(@Validated @RequestBody Blog blog) {
-
+    public Result edit(@Validated @RequestBody BlogSERequest blogSERequest) {
         Blog temp = null;
-        if(blog.getId() != null) {
-            temp = blogService.getById(blog.getId());
-            if (temp.getUserId()!=blog.getUserId()){
+        if(blogSERequest.getId() != null) {
+            temp = blogService.getById(blogSERequest.getId());
+            if (temp.getUserId()!=blogSERequest.getUserId()){
                 return Result.fail("Can only edit your own blog!");
             }
         } else {
             temp = new Blog();
-            temp.setUserId(blog.getUserId());
+            temp.setUserId(blogSERequest.getUserId());
         }
-        temp.setContent(blog.getContent());
-        temp.setDescription(blog.getDescription());
-        temp.setTitle(blog.getTitle());
+        temp.setContent(blogSERequest.getContent());
+        temp.setDescription(blogSERequest.getDescription());
+        temp.setTitle(blogSERequest.getTitle());
         temp.setCreated(LocalDateTime.now());
         temp.setStatus(0);
-
-        BeanUtil.copyProperties(blog, temp, "id", "userId", "created", "status");
+        JSONArray jsonArray = JSONArray.fromObject("[\"1\"]");
+        temp.setLabel("blog.getLabel():" + blogSERequest.getLabel());
+        temp.setLabel(blogSERequest.getLabel().toString());
+        //BeanUtil.copyProperties(blogService, temp, "id", "userId", "created", "status");
+        System.out.println("前一句");
         blogService.saveOrUpdate(temp);
+        System.out.println("后一句");
         return Result.succ(null);
     }
 
@@ -114,8 +143,6 @@ public class BlogController {
         return Result.succ("减少博客点赞数成功");
 
     }
-
-
 
     @PostMapping("/blog/addfavoritenum")
     public Result addfavoritenum(@RequestBody Blog blog){
@@ -159,6 +186,8 @@ public class BlogController {
             return Result.succ(200,"获取用户点赞博客成功",pblogs);
         }
     }
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.markerhub.service.impl;
 
 import com.markerhub.Dao.BlogDao;
+import com.markerhub.common.dto.Label;
 import com.markerhub.entity.Blog;
 import com.markerhub.entity.Favorite;
 import com.markerhub.entity.Praise;
@@ -63,5 +64,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public List<Blog> getfavoriteByid(List<Favorite> list){
         return blogDao.getfavoriteByid(list);
+    }
+
+    @Override
+    public void updateLabel(Label label) {
+        blogDao.updateLabel(label);
     }
 }
