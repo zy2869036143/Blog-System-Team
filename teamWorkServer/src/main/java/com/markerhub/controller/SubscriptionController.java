@@ -46,7 +46,7 @@ public class SubscriptionController {
         for (int i = 0; i < alluser.size(); i++) {
             List<Subscription> subList = subscriptionService.getALLsubscribe(alluser.get(i));
 
-            list.add(subList);
+            list.add(i,subList);
         }
         return Result.succ(200,"获取所有用户被关注信息成功",list);
     }
