@@ -15,7 +15,7 @@
         <div style="margin-bottom: 10px">
           <el-tooltip v-for="(tag,index) in tags" :key="index" :content="tag.id" placement="top" effect="dark">
             <el-button v-if="!tag.ifChosen" :icon="tag.icon" circle @click="chooseTag($event,index)"></el-button>
-            <el-button v-if="tag.ifChosen" type="primary" plain :icon="tag.icon" circle @click="chooseTag($event,index)"></el-button>
+            <el-button v-if="tag.ifChosen" type="warning" plain :icon="tag.icon" circle @click="chooseTag($event,index)"></el-button>
           </el-tooltip>
 
         </div>
@@ -60,7 +60,7 @@ export default {
           icon:"el-icon-cyuyan",
           ifChosen:false
         },
-        {url:``,
+        {
           id:"java",
           icon:"el-icon-java",
           ifChosen:false
@@ -123,6 +123,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm)
+          this.ruleForm.label = this.tagChoice
           request.post('http://localhost:8081/blog/edit', this.ruleForm).then(res => {
             console.log(res)
             this.$alert('操作成功', '提示', {
@@ -169,6 +170,15 @@ export default {
         this.ruleForm.title = blog.title
         this.ruleForm.description = blog.description
         this.ruleForm.content = blog.content
+        blog.label = JSON.parse(blog.label)
+        for(let i = 0;i<this.tags.length;i++){
+          for(let j = 0;j<blog.label.length;j++){
+            if(blog.label[j] === this.tags[i].id){
+              this.tags[i].ifChosen = true;
+            }
+          }
+        }
+        this.$forceUpdate()
       })
     }
 

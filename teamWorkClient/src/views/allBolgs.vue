@@ -1,5 +1,6 @@
 <template>
-  <div style="margin-left: 50px">
+  <div style="margin-left: 50px" >
+    <div v-if="blogs.length>0">
       <el-pagination class="mpage"
                      small
                      background
@@ -11,48 +12,50 @@
       </el-pagination>
 
 
-    <div v-for="(blog,index) in blogs" class="container">
-      <div>
-        <card @click.native="cardPush(blog)"
-              data-image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fd1fc2cfbd0fad9775e7a394bc97adb0b1d9f6be15807b-j7OsDp_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641138155&t=e23e2c98fdb1def9448caae85ef3a908">
-          <h1 slot="header">
-            {{blog.title}}
-          </h1>
+      <div v-for="(blog,index) in blogs" class="container">
+        <div>
+          <card @click.native="cardPush(blog)"
+                data-image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fd1fc2cfbd0fad9775e7a394bc97adb0b1d9f6be15807b-j7OsDp_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641138155&t=e23e2c98fdb1def9448caae85ef3a908">
+            <h1 slot="header">
+              {{blog.title}}
+            </h1>
 
-          <p slot="content">
-            {{blog.description}}<br><br>
-            {{blog.created}}
-          </p>
+            <p slot="content">
+              {{blog.description}}<br><br>
+              {{blog.created}}
+            </p>
 
-        </card>
-        <div class="po">
-          <el-button circle v-if="!ifLike[index]" icon="el-icon-icon" @click.native="like($event,index,blog)" size="medium">{{blog.praise}}</el-button>
-          <el-button circle v-if="ifLike[index]" type="primary" icon="el-icon-icon-copy" @click.native="like($event,index,blog)" size="medium">{{blog.praise}}</el-button>
-          <el-button circle v-if="!ifFavourite[index]" icon="el-icon-shoucang" @click.native="favourite($event,index,blog)" size="medium">{{blog.favorite}}</el-button>
-          <el-button circle v-if="ifFavourite[index]" type="warning" icon="el-icon-shoucang" @click.native="favourite($event,index,blog)" size="medium">{{blog.favorite}}</el-button>
+          </card>
+          <div class="po">
+            <el-button circle v-if="!ifLike[index]" icon="el-icon-icon" @click.native="like($event,index,blog)" size="medium">{{blog.praise}}</el-button>
+            <el-button circle v-if="ifLike[index]" type="primary" icon="el-icon-icon-copy" @click.native="like($event,index,blog)" size="medium">{{blog.praise}}</el-button>
+            <el-button circle v-if="!ifFavourite[index]" icon="el-icon-shoucang" @click.native="favourite($event,index,blog)" size="medium">{{blog.favorite}}</el-button>
+            <el-button circle v-if="ifFavourite[index]" type="warning" icon="el-icon-shoucang" @click.native="favourite($event,index,blog)" size="medium">{{blog.favorite}}</el-button>
 
+          </div>
         </div>
+
+
+
+        <!--      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(blog)">-->
+        <!--          <h1>{{blog.title}}</h1>-->
+        <!--          <h6>{{blog.created}}</h6>-->
+        <!--        <p>{{blog.description}}</p>-->
+        <!--        <el-button circle v-if="!ifLike[index]" icon="el-icon-icon" @click.native="like($event,index)" size="mini">-->
+
+        <!--        </el-button>-->
+        <!--        <el-button circle v-if="ifLike[index]" type="primary" icon="el-icon-icon-copy" @click.native="like($event,index)" size="mini">-->
+        <!--&lt;!&ndash;          <svg class="svg" aria-hidden="true">&ndash;&gt;-->
+        <!--&lt;!&ndash;            <use xlink:href="#el-icon-icon-copy"></use>&ndash;&gt;-->
+        <!--&lt;!&ndash;          </svg>&ndash;&gt;-->
+        <!--        </el-button>-->
+        <!--        <el-button circle v-if="!ifFavourite[index]" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>-->
+        <!--        <el-button circle v-if="ifFavourite[index]" type="warning" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>-->
+
+        <!--      </el-card>-->
       </div>
-
-
-
-      <!--      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(blog)">-->
-<!--          <h1>{{blog.title}}</h1>-->
-<!--          <h6>{{blog.created}}</h6>-->
-<!--        <p>{{blog.description}}</p>-->
-<!--        <el-button circle v-if="!ifLike[index]" icon="el-icon-icon" @click.native="like($event,index)" size="mini">-->
-
-<!--        </el-button>-->
-<!--        <el-button circle v-if="ifLike[index]" type="primary" icon="el-icon-icon-copy" @click.native="like($event,index)" size="mini">-->
-<!--&lt;!&ndash;          <svg class="svg" aria-hidden="true">&ndash;&gt;-->
-<!--&lt;!&ndash;            <use xlink:href="#el-icon-icon-copy"></use>&ndash;&gt;-->
-<!--&lt;!&ndash;          </svg>&ndash;&gt;-->
-<!--        </el-button>-->
-<!--        <el-button circle v-if="!ifFavourite[index]" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>-->
-<!--        <el-button circle v-if="ifFavourite[index]" type="warning" icon="el-icon-shoucang" @click.native="favourite($event,index)" size="mini"></el-button>-->
-
-<!--      </el-card>-->
     </div>
+    <el-empty v-if="blogs.length<=0" description="暂无相关博客"></el-empty>
 
   </div>
 
@@ -72,29 +75,33 @@ export default {
       pageSize: 5,
       user:"",
       ifLogin:false,
+      category:'',
     }
   },
 
   created() {
-    this.page(1)
-    console.log(this.$route.params.user)
     // if(this.$route.params.user){
     //   this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
     // }
-    if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
-      this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
-      this.ifLogin = true;
-    }else {
-      if(!this.$route.params.user){
-        this.ifLogin = false;
-      }else{
-        this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
-        localStorage.setItem('user',this.$route.params.user);
-        this.ifLogin = true
+    this.load();
+  },
+  watch:{
+    $route(to,from){
+      if(to.path !== from.path)
+      {
+        this.blogs = []
+        this.total = 0
+        this.pageSize= 6
+        this.currentPage = 1
+        this.yourComment=''
+          this.ifFavourite=[]
+        this.ifLike=[]
+        this.load()
       }
-    }
-    console.log(this.ifLogin)
 
+    },
+    deep:true,
+    immediate:true,
   },
   methods: {
     cardPush(blog){
@@ -104,55 +111,84 @@ export default {
       }
       this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
     },
+    load(){
+      this.category = this.$route.params.category
+      console.log(this.category)
+      if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
+        this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
+        this.ifLogin = true;
+      }else {
+        if(!this.$route.params.user){
+          this.ifLogin = false;
+        }else{
+          this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+          localStorage.setItem('user',this.$route.params.user);
+          this.ifLogin = true
+        }
+      }
+      console.log(this.ifLogin)
+      this.page(1)
+    },
+
     page(currentPage) {
       console.log(currentPage)
       let getData = {
         currentPage: currentPage,
       }
-      request.post("http://localhost:8081/blogs",getData).then(res => {
+      if (this.category === 'all'){
+        request.post("http://localhost:8081/blogs",getData).then(res => {
 
-        console.log(res)
-        this.blogs = res.data.records
-        console.log(this.blogs)
-        this.currentPage = res.data.current
-        this.total = res.data.total
-        this.pageSize = res.data.size
-        request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
-          if(res1.code === 200){
-            let praise = res1.data
-            console.log(praise)
-            for(let i = 0;i<this.blogs.length;i++){
-              for(let j = 0;j<praise.length;j++){
-                if(praise[j].pblogid === this.blogs[i].id){
-                  this.ifLike[i] = true;
-                  break;
-                }else {
-                  this.ifLike[i] = false;
+          console.log(res)
+          this.blogs = res.data.records
+          console.log(this.blogs)
+          this.currentPage = res.data.current
+          this.total = res.data.total
+          this.pageSize = res.data.size
+          request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
+            if(res1.code === 200){
+              let praise = res1.data
+              console.log(praise)
+              for(let i = 0;i<this.blogs.length;i++){
+                for(let j = 0;j<praise.length;j++){
+                  if(praise[j].pblogid === this.blogs[i].id){
+                    this.ifLike[i] = true;
+                    break;
+                  }else {
+                    this.ifLike[i] = false;
+                  }
                 }
               }
+              this.$forceUpdate()
             }
-          this.$forceUpdate()
-          }
-        })
+          })
 
-        request.post("http://localhost:8081/favorite/getfavoriteinfo?userid="+this.user.id).then(res1=>{
-          if(res1.code === 200){
-            let favorite = res1.data
-            console.log(favorite)
-            for(let i = 0;i<this.blogs.length;i++){
-              for(let j = 0;j<favorite.length;j++){
-                if(favorite[j].fblogid === this.blogs[i].id){
-                  this.ifFavourite[i] = true;
-                  break;
-                }else {
-                  this.ifFavourite[i] = false;
+          request.post("http://localhost:8081/favorite/getfavoriteinfo?userid="+this.user.id).then(res1=>{
+            if(res1.code === 200){
+              let favorite = res1.data
+              console.log(favorite)
+              for(let i = 0;i<this.blogs.length;i++){
+                for(let j = 0;j<favorite.length;j++){
+                  if(favorite[j].fblogid === this.blogs[i].id){
+                    this.ifFavourite[i] = true;
+                    break;
+                  }else {
+                    this.ifFavourite[i] = false;
+                  }
                 }
               }
+              this.$forceUpdate()
             }
-            this.$forceUpdate()
-          }
+          })
         })
-      })
+      }else{
+        let labelData = {
+          label: this.category
+        }
+        request.post("http://localhost:8081/blogs/getByClass",labelData).then(res=>{
+          console.log(res)
+        })
+      }
+
     },
     like(e,index,blog) {
       e.stopPropagation();

@@ -1,12 +1,24 @@
 <template>
   <div style="width: 100%">
     <el-card>
-      <h2> {{ blog.title }}</h2>
-      <el-button type="primary" icon="el-icon-edit" plain v-if="ownBlog"
-                 size="mini"
-                 @click="handleEdit()">
-        编辑
-      </el-button>
+      <div>
+          <h2 style="margin-bottom: 8px"> {{ blog.title }}
+            <el-tooltip placement="top" effect="dark" content="重新编辑博客">
+              <el-button type="primary" icon="el-icon-edit" plain v-if="ownBlog"
+                         size="mini" circle
+                         @click="handleEdit()" style="margin-top: 10px">
+              </el-button>
+            </el-tooltip>
+          </h2>
+
+        <h3 style="color: gainsboro;font-size: 5px;margin-top: 10px;margin-bottom: 10px">作者:{{blog.username}}</h3>
+
+      </div>
+      <div style="margin-top: 10px">
+        <el-tooltip v-for="(tag,index) in tags" :key="index" :content="tag.id" placement="bottom" effect="dark" v-if="tag.ifChosen">
+          <el-button  :icon="tag.icon" circle type="success" plain size="mini"></el-button>
+        </el-tooltip>
+      </div>
       <el-divider></el-divider>
       <div class="markdown-body" v-html="content"></div>
       <el-divider></el-divider>
@@ -105,6 +117,43 @@ import request from "../util/request";
 export default {
   data() {
     return {
+      tags:[
+        {ifChosen:false,
+          id:"python",
+          icon:"el-icon-python"
+        },
+        {
+          id:"c/c++",
+          icon:"el-icon-cyuyan",
+          ifChosen:false
+        },
+        {
+          id:"java",
+          icon:"el-icon-java",
+          ifChosen:false
+        },
+        {
+          id:"dart",
+          icon:"el-icon-dart",
+          ifChosen:false
+        },
+        {ifChosen:false,
+          id:"javaScript",
+          icon:"el-icon-js"
+        },
+        {ifChosen:false,
+          id:"swift",
+          icon:"el-icon-swift"
+        },
+        {ifChosen:false,
+          id:"c#",
+          icon:"el-icon-Cyuyan"
+        },
+        {ifChosen:false,
+          id:"其他",
+          icon:"el-icon-more-outline"
+        },
+      ],
       content:'',
       ifLogin:false,
       reply:'',
@@ -404,7 +453,6 @@ export default {
     let data =  JSON.parse(decodeURIComponent(this.$route.params.data))
     let blogId = data.blogId
     this.user = data.user
-    console.log(this.user)
     if(this.user){
       this.ifLogin = true
     }else {
@@ -413,11 +461,25 @@ export default {
     let url = 'http://localhost:8081/blog/'+blogId
     request.get(url).then(res=>{
       this.blog = res.data
+      this.blog.username = res.msg
       if(this.blog.userId === this.user.id){
         this.ownBlog = true;
       }else{
         this.ownBlog = false;
       }
+      this.blog.label = JSON.parse(this.blog.label)
+      if(this.blog.label){
+        for(let i = 0;i<this.tags.length;i++){
+          for(let j = 0;j<this.blog.label.length;j++){
+            if(this.blog.label[j] === this.tags[i].id){
+              this.tags[i].ifChosen = true;
+            }
+          }
+        }
+      }
+
+      console.log(this.tags)
+      this.$forceUpdate()
 
       var MardownIt = require("markdown-it")
       var md = new MardownIt()

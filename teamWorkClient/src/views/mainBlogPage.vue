@@ -133,13 +133,13 @@ export default {
         },
         id: "全部博客",
         subs:[
-          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}`,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'all'}`,
             data:{
             },
             id:"全部",
             icon:"el-icon-quanbu"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'python'}`,
             data:{
             },
             id:"python",

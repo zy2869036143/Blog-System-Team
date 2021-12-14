@@ -36,7 +36,7 @@ export default new Router({
       children: [
 
         {
-          path: '/mainBlogPage/allBlogs/:user?',
+          path: '/mainBlogPage/allBlogs/:user?/:category?',
           component: allBlogs,
         },
         {
