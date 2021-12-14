@@ -73,7 +73,7 @@ export default {
       currentPage: 1,
       total: 0,
       pageSize: 5,
-      user:"",
+      user:'',
       ifLogin:false,
       category:'',
     }
@@ -112,13 +112,15 @@ export default {
       this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
     },
     load(){
-      this.category = this.$route.params.category
+      if(this.$route.params.category)
+        this.category = this.$route.params.category
       console.log(this.category)
+      console.log(this.$route.params.user)
       if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
         this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
         this.ifLogin = true;
       }else {
-        if(!this.$route.params.user){
+        if(!this.$route.params.user || JSON.parse(decodeURIComponent(this.$route.params.user)) === ""){
           this.ifLogin = false;
         }else{
           this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
@@ -135,7 +137,8 @@ export default {
       let getData = {
         currentPage: currentPage,
       }
-      if (this.category === 'all'){
+      console.log(this.category)
+      if (this.category === 'all' || this.category === ''){
         request.post("http://localhost:8081/blogs",getData).then(res => {
 
           console.log(res)

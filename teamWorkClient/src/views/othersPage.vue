@@ -73,7 +73,7 @@ export default {
   name: "personPage",
   data() {
     return {
-      user: {},
+      user: '',
       haveSub:false,
       activeName: 'first',
 

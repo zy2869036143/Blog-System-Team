@@ -100,7 +100,7 @@ export default {
   name: "personPage",
   data() {
     return {
-      user: {},
+      user: '',
       activeName: 'first',
       pblogs:[
         {

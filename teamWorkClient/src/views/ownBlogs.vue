@@ -45,7 +45,7 @@ export default {
   },
    created() {
      console.log(this.$route.params.user)
-     if(this.$route.params.user==='{}'||!this.$route.params.user){
+     if(JSON.parse(decodeURIComponent(this.$route.params.user))===''||!this.$route.params.user){
        this.$message({
          type:"warning",
          message:"请先登录",
