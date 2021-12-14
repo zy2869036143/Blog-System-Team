@@ -11,7 +11,21 @@
             </el-tooltip>
           </h2>
 
-        <h3 style="color: gainsboro;font-size: 5px;margin-top: 10px;margin-bottom: 10px">作者:{{blog.username}}</h3>
+        <h3 style="color: gainsboro;font-size: 10px;margin-top: 10px;margin-bottom: 10px">
+          作者:{{blog.username}}
+          <el-tooltip placement="top" effect="dark" content="关注" v-if="!ifSub && !ownBlog">
+            <el-button type="warning" icon="el-icon-star-off" plain
+                       size="mini" round
+                       @click="onSub($event)" style="margin-top: 10px;margin-left: 10px">关注该作者
+            </el-button>
+          </el-tooltip>
+          <el-tooltip placement="top" effect="dark" content="取消关注" v-if="ifSub && !ownBlog">
+            <el-button type="info" icon="el-icon-star-off" plain
+                       size="mini" round
+                       @click="onSub($event)" style="margin-top: 10px;margin-left: 10px">已关注
+            </el-button>
+          </el-tooltip>
+        </h3>
 
       </div>
       <div style="margin-top: 10px">
@@ -117,6 +131,7 @@ import request from "../util/request";
 export default {
   data() {
     return {
+      ifSub:false,
       tags:[
         {ifChosen:false,
           id:"python",
@@ -205,6 +220,52 @@ export default {
     }
   },
   methods:{
+    onSub(e){
+      e.stopPropagation();
+      if(!this.ifLogin){
+        this.$message({
+          type:'warning',
+          message:'请先登录'
+        })
+        let target = e.target;
+        if(target.nodeName === "I"||target.nodeName === "svg"){
+          target = e.target.parentNode;
+        }
+        target.blur();
+        return
+      }
+      if(!this.ifSub){
+
+        let data = {
+          id: this.user.id,
+          sid: this.blog.userId,
+        }
+        this.ifSub = !this.ifSub
+        console.log(data)
+        request.post("http://localhost:8081/subscribe/addsubscribe",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+          }
+        })
+      }else {
+        let data = {
+          id: this.user.id,
+          sid: this.blog.userId,
+        }
+        this.ifSub = !this.ifSub
+        console.log(data)
+        request.post("http://localhost:8081/subscribe/delsubscribe",data).then(res=>{
+          console.log(res.code)
+          if(res.code === 200){
+          }
+        })
+      }
+      let target = e.target;
+      if(target.nodeName === "I"||target.nodeName === "svg"){
+        target = e.target.parentNode;
+      }
+      target.blur();
+    },
     handleEdit(){
       let editData = {
         user:this.user,
@@ -532,6 +593,21 @@ export default {
             }
           }
           console.log(this.comments)
+        }
+      })
+
+      request.post("http://localhost:8081/subscribe/getsubscribe?id="+this.user.id).then(res=>{
+        if(res.code === 200){
+          let sub = res.data
+          console.log(222)
+          console.log(sub)
+          for(let i = 0;i<sub.length;i++){
+            if(sub[i].id === this.blog.userId){
+              this.ifSub = true;
+              break;
+            }
+          }
+          this.$forceUpdate()
         }
       })
     })
