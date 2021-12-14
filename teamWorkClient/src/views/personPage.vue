@@ -13,6 +13,9 @@
       <h1 style="margin-left: 45px;font-size: 45px">
         <i class="el-icon-user-solid"></i>
         {{user.username}}</h1>
+
+
+
     </el-header>
     <el-container>
       <el-aside>
@@ -22,6 +25,10 @@
           </div>
           <div class="text item">
             {{'昵称 ：' + user.username }}
+            <div>
+              {{'被关注数 ：'+this.subnum}}
+            </div>
+
           </div>
         </el-card>
       </el-aside>
@@ -119,14 +126,31 @@ export default {
         {
           username:''
         }
-      ]
+      ],
+      subnum:''
     }
   },
   created() {
     this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
     this.first()
+    this.getsubnum()
   },
   methods: {
+    getsubnum(){
+      request.post('http://localhost:8081/subscribe/get1usersubscribe?id='+this.user.id).then(res=>{
+        if(res.code===200){
+          console.log(res.data);
+          let data = res.data
+          let i = 0
+          for(i = 0;i<data.length;i++){
+            if(data[i][0].sid === this.user.id){
+              break
+            }
+          }
+          this.subnum = data[i].length
+        }
+      })
+    },
     handleClick(tab, event) {
       console.log(tab, event);
       if (tab.name === 'first') {

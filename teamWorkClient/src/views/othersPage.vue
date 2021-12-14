@@ -22,6 +22,9 @@
           </div>
           <div class="text item">
             {{'昵称 ：' + user.username }}
+            <div>
+              {{'被关注数 ：'+this.getsubnum}}
+            </div>
           </div>
         </el-card>
       </el-aside>
@@ -79,7 +82,7 @@ export default {
         description:'',
         created:''
       }],
-
+      subnum:'',
 
       subusers:[
         {
@@ -91,6 +94,7 @@ export default {
   created() {
     this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
     this.first()
+    this.getsubnum()
 
   },
   watch:{
@@ -105,6 +109,21 @@ export default {
     immediate:true,
   },
   methods: {
+    getsubnum(){
+      request.post('http://localhost:8081/subscribe/get1usersubscribe?id='+this.user.id).then(res=>{
+        if(res.code===200){
+          console.log(res.data);
+          let data = res.data
+          let i = 0
+          for(i = 0;i<data.length;i++){
+            if(data[i][0].sid === this.user.id){
+              break
+            }
+          }
+          this.subnum = data[i].length
+        }
+      })
+    },
     handleClick(tab, event) {
       console.log(tab, event);
       if (tab.name === 'first') {
