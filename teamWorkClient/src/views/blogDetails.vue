@@ -513,12 +513,28 @@ export default {
   created() {
     let data =  JSON.parse(decodeURIComponent(this.$route.params.data))
     let blogId = data.blogId
-    this.user = data.user
-    if(this.user){
-      this.ifLogin = true
+    // this.user = data.user
+    if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
+      this.user = JSON.parse(decodeURIComponent(localStorage.getItem("user")))
+      this.ifLogin = true;
+      console.log(this.ifLogin)
     }else {
-      this.ifLogin = false;
+      if(!this.$route.params.user){
+        this.ifLogin = false;
+      }else{
+        this.ifLogin = true
+        this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+        localStorage.setItem('user',this.$route.params.user);
+      }
     }
+    console.log(222)
+    console.log(this.user)
+    console.log(this.ifLogin)
+    // if(this.user){
+    //   this.ifLogin = true
+    // }else {
+    //   this.ifLogin = false;
+    // }
     let url = 'http://localhost:8081/blog/'+blogId
     request.get(url).then(res=>{
       this.blog = res.data

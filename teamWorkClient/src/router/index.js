@@ -10,6 +10,8 @@ import editBlogs from "../views/editBlogs"
 import info from "../views/info"
 import personPage from"../views/personPage"
 import searchBlogs from "../views/searchBlog"
+import searchUsers from "../views/searchUsers";
+import othersPage from "../views/othersPage";
 Vue.use(Router)
 
 export default new Router({
@@ -57,8 +59,16 @@ export default new Router({
           component: searchBlogs
         },
         {
+          path: '/searchUsers/:data?',
+          component: searchUsers
+        },
+        {
           path: '/personPage/:user?',
           component: personPage
+        },
+        {
+          path: '/othersPage/:user?',
+          component: othersPage
         },
       ],
 

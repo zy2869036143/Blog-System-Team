@@ -236,6 +236,17 @@ export default {
         })
 
       }
+      else{
+
+        let data = {
+          user:this.user,
+          searchKey:this.search,
+        }
+        this.$router.push({
+          path:`/searchUsers/${encodeURIComponent(JSON.stringify(data))}`,
+        })
+
+      }
     },
     logOut(){
       localStorage.setItem("user","");
