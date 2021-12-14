@@ -59,7 +59,7 @@ public class BlogController {
         ArrayList<Blog> result = new ArrayList<>();
         for (int i=0; i< blogList.size(); ++i){
             JSONArray labelArray = JSONArray.fromObject(blogList.get(i).getLabel());
-            for (int j=0 ; j < labelArray.size(); ++i){
+            for (int j=0 ; j < labelArray.size(); ++j){
                 if (labelArray.get(j).equals(label.getLabel())){
                     result.add(blogList.get(i));
                     break;

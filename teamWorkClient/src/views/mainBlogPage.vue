@@ -145,43 +145,43 @@ export default {
             id:"python",
             icon:"el-icon-python"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${"cc++"}`,
             data:{
             },
             id:"c/c++",
             icon:"el-icon-cyuyan"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'java'}`,
             data:{
             },
             id:"java",
             icon:"el-icon-java"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'dart'}`,
             data:{
             },
             id:"dart",
             icon:"el-icon-dart"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'javaScript'}`,
             data:{
             },
             id:"javaScript",
             icon:"el-icon-js"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'swift'}`,
             data:{
             },
             id:"swift",
             icon:"el-icon-swift"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'c#'}`,
             data:{
             },
             id:"c#",
             icon:"el-icon-Cyuyan"
           },
-          {url:``,
+          {url:`/mainBlogPage/allBlogs/${encodeURIComponent(JSON.stringify(this.user))}/${'其他'}`,
             data:{
             },
             id:"其他",

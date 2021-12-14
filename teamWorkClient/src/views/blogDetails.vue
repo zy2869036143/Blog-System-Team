@@ -216,7 +216,8 @@ export default {
         content: "2222222222"
       },
       user:'',
-      ownBlog: true
+      ownBlog: true,
+      labelT:'',
     }
   },
   methods:{
@@ -302,6 +303,8 @@ export default {
           if(res.code === 200){
             let temp = this.blog;
             temp.created = '';
+            temp.label = this.labelT
+            console.log(temp)
             request.post("http://localhost:8081/blog/addpraisenum",temp).then(res1=>{
               if(res1.code === 200){
                 this.blog.praise = this.blog.praise+1
@@ -323,6 +326,8 @@ export default {
           if(res.code === 200){
             let temp = this.blog;
             temp.created = '';
+            temp.label = this.labelT
+            console.log(temp)
             request.post("http://localhost:8081/blog/delpraisenum",temp).then(res1=>{
               if(res1.code === 200){
                 this.blog.praise = this.blog.praise-1
@@ -367,6 +372,7 @@ export default {
           if(res.code === 200){
             let temp = this.blog;
             temp.created = '';
+            temp.label = this.labelT
             console.log(temp)
             request.post("http://localhost:8081/blog/addfavoritenum",temp).then(res1=>{
               if(res1.code === 200){
@@ -389,6 +395,7 @@ export default {
           if(res.code === 200){
             let temp = this.blog;
             temp.created = '';
+            temp.label = this.labelT
             request.post("http://localhost:8081/blog/delfavoritenum",temp).then(res1=>{
               if(res1.code === 200){
                 this.blog.favorite = this.blog.favorite-1
@@ -539,6 +546,7 @@ export default {
     request.get(url).then(res=>{
       this.blog = res.data
       this.blog.username = res.msg
+      this.labelT = this.blog.label
       if(this.blog.userId === this.user.id){
         this.ownBlog = true;
       }else{

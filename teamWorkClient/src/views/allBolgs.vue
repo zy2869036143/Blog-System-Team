@@ -109,11 +109,18 @@ export default {
         user: this.user,
         blogId: blog.id,
       }
+
       this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
     },
     load(){
       if(this.$route.params.category)
         this.category = this.$route.params.category
+      if(this.category === 'cc++'){
+        this.category = 'c/c++'
+      }
+      if(this.category === 'c'){
+        this.category = 'c#'
+      }
       console.log(this.category)
       console.log(this.$route.params.user)
       if(localStorage.getItem("user")!==""&&localStorage.getItem("user")){
@@ -189,6 +196,52 @@ export default {
         }
         request.post("http://localhost:8081/blogs/getByClass",labelData).then(res=>{
           console.log(res)
+          this.blogs = []
+          this.pageSize = 6
+          this.currentPage = currentPage
+          this.total = res.data.length
+          console.log(this.total)
+
+          for(let i = (currentPage-1)*this.pageSize;i<currentPage*this.pageSize && i<res.data.length;i++){
+            this.blogs.push(res.data[i]);
+          }
+
+          request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
+            if(res1.code === 200){
+              let praise = res1.data
+              console.log(praise)
+              for(let i = 0;i<this.blogs.length;i++){
+                for(let j = 0;j<praise.length;j++){
+                  if(praise[j].pblogid === this.blogs[i].id){
+                    this.ifLike[i] = true;
+                    break;
+                  }else {
+                    this.ifLike[i] = false;
+                  }
+                }
+              }
+              this.$forceUpdate()
+            }
+          })
+
+          request.post("http://localhost:8081/favorite/getfavoriteinfo?userid="+this.user.id).then(res1=>{
+            if(res1.code === 200){
+              let favorite = res1.data
+              console.log(favorite)
+              for(let i = 0;i<this.blogs.length;i++){
+                for(let j = 0;j<favorite.length;j++){
+                  if(favorite[j].fblogid === this.blogs[i].id){
+                    this.ifFavourite[i] = true;
+                    break;
+                  }else {
+                    this.ifFavourite[i] = false;
+                  }
+                }
+              }
+              this.$forceUpdate()
+            }
+          })
+
         })
       }
 
@@ -214,7 +267,6 @@ export default {
           pblogid: blog.id,
         }
         this.ifLike[index] = !this.ifLike[index]
-        console.log(data)
         request.post("http://localhost:8081/praise/addpraiseinfo",data).then(res=>{
           console.log(res.code)
           if(res.code === 200){
