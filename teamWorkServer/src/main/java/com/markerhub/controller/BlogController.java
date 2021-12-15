@@ -79,6 +79,12 @@ public class BlogController {
         return Result.succ(200, user.getUsername(), blog);
     }
 
+    @PostMapping("/blog/delete")
+    public  Result delete (@RequestParam("blogId") Long id){
+        blogService.removeById(id);
+        return Result.succ("成功删除博客");
+    }
+
 //    @RequiresAuthentication
     @PostMapping("/blog/edit")
     public Result edit(@Validated @RequestBody BlogSERequest blogSERequest) {

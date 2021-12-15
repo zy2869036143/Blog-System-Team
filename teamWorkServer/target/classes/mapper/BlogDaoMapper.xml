@@ -16,7 +16,7 @@
     </select>
     <select id="getfavoriteByid" resultType="com.markerhub.entity.Blog">
         select * from m_blog where id in
-        <foreach collection="plist" index="index" item="list" open="(" separator="," close=")">
+        <foreach collection="flist" index="index" item="list" open="(" separator="," close=")">
             #{list.fblogid}
         </foreach>
     </select>
