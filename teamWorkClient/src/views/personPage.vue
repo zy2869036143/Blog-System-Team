@@ -25,10 +25,24 @@
           </div>
           <div class="text item">
 
-            <el-tag>
-              {{'昵称 ：' + user.username }}
-            </el-tag>
-            <el-tag type="success">{{'粉丝数：'+subnum}}</el-tag>
+            <div style="margin-bottom: 10px">
+              <el-tag>
+                {{'昵称 ：' + user.username }}
+              </el-tag>
+            </div>
+            <div style="margin-bottom: 10px">
+              <el-tag type="info">
+                {{'邮箱 ：' + user.email }}
+              </el-tag>
+            </div>
+            <div style="margin-bottom: 10px" type="danger">
+              <el-tag type="success">{{'粉丝数：'+subnum}}</el-tag>
+            </div>
+            <div style="margin-bottom: 10px">
+              <el-tag style="color: #d953e3">
+                {{'关注：'+youSubNum }}
+              </el-tag>
+            </div>
 
           </div>
         </el-card>
@@ -37,6 +51,10 @@
         <el-main>
           <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-right: 80px">
             <el-tab-pane label="我的动态" name="first">
+              <span slot="label">
+                  <i class="el-icon-liebiao"></i>
+                  我的动态
+                </span>
               <el-timeline v-if="haveOwn">
                 <el-timeline-item  placement="top" v-for="blog in blogs" :key="blog.id">
                 <el-card @click.native="cardPush(blog)" shadow="hover">
@@ -49,7 +67,13 @@
               </el-timeline>
               <el-empty v-if="!haveOwn"></el-empty>
             </el-tab-pane>
+
+
             <el-tab-pane label="我的收藏" name="second">
+              <span slot="label">
+                  <i class="el-icon-24gf-playlistHeart2"></i>
+                  我的收藏
+                </span>
               <el-timeline v-if="haveFavourite">
                 <el-timeline-item placement="top" v-for="blog in fblogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
@@ -62,7 +86,12 @@
               </el-timeline>
               <el-empty v-if="!haveFavourite"></el-empty>
             </el-tab-pane>
+
             <el-tab-pane label="我的关注" name="third">
+              <span slot="label">
+                  <i class="el-icon-shoucang"></i>
+                  我的关注
+                </span>
               <el-timeline v-if="haveSub">
                 <el-timeline-item placement="top" v-for="user in subusers" :key="user.id">
                   <el-card @click.native="cardPush1(user)" shadow="hover">
@@ -77,6 +106,10 @@
 
             </el-tab-pane>
             <el-tab-pane label="点赞过" name="fourth">
+              <span slot="label">
+                  <i class="el-icon-icon"></i>
+                  点赞过
+                </span>
               <el-timeline v-if="havePraise">
                 <el-timeline-item placement="top" v-for="blog in pblogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
@@ -134,13 +167,15 @@ export default {
       haveSub:false,
       haveFavourite:false,
       havePraise:false,
-      haveOwn:false
+      haveOwn:false,
+      youSubNum:0
     }
   },
   created() {
     this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
     console.log(this.user)
     this.first()
+    this.third()
     this.getsubnum()
   },
   methods: {
@@ -217,6 +252,7 @@ export default {
         if(res3.code===200){
           console.log(res3.data);
           this.subusers = res3.data;
+          this.youSubNum = res3.data.length
           this.haveSub = true;
         }else {
           this.haveSub = false

@@ -15,9 +15,9 @@
             </div>
 
             <el-popconfirm
-              title="这是一段内容确定删除吗？"
+              title="真的要删除你的这条博客吗？"
               style="float: right;margin-top: 25px"
-            >
+              @confirm="deleteBlog(blog)">
               <el-button slot="reference" @click="stopE($event)" type="danger" plain circle icon="el-icon-delete"></el-button>
             </el-popconfirm>
             <el-button  @click="edit(blog,$event)" style="float: right;margin-top: 25px;margin-right: 10px" type="primary" plain circle icon="el-icon-view
@@ -86,6 +86,18 @@ export default {
       e.stopPropagation()
       this.cardPush(blog)
     },
+     deleteBlog(blog){
+       request.post('http://localhost:8081/blog/delete?blogId='+blog.id).then(res=>{
+         let postData = {
+           username: this.user.username,
+         }
+         request.post("http://localhost:8081/search",postData).then(res1=>{
+           if(res1.code === 200){
+             this.blogs = res1.data;
+           }
+         })
+       })
+     },
      cardPush(blog){
        let pushData = {
          user: this.user,
@@ -95,6 +107,7 @@ export default {
      },
      stopE(e){
        e.stopPropagation()
+       console.log(e)
        let target = e.target;
        if(target.nodeName === "I"||target.nodeName === "svg"){
          target = e.target.parentNode;
