@@ -3,7 +3,7 @@
       <div class="wrapper">
         <!-- 登录表单区域 -->
         <div class="container1">
-          <p class="title">{{ textLogin }}</p>
+          <p class="title" style="color: #42464c">{{ textLogin }}</p>
           <form size="mini" v-model="form" label='登录你的博客'class="form">
 
             <input placeholder="昵称" v-model="form.username" prefix-icon="el-icon-user"type="text"></input>
@@ -96,7 +96,7 @@ form button {
   background-color: white;
   border: 0;
   padding: 10px 15px;
-  color: #53e3a6;
+  color: #147897;
   border-radius: 3px;
   width: 400px;
   cursor: pointer;
@@ -133,10 +133,10 @@ form input:hover {
 form input:focus {
   background-color: white;
   width: 300px;
-  color: #53e3a6;
+  color: #25a9ec;
 }
 .login_container {
-  background-image: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);;
+  background-image: linear-gradient(to bottom right, #147897 0%, #d0dfe6 100%);;
   width: 100%;
   height: 100%;
   position: fixed;

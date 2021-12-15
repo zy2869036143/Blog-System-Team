@@ -92,7 +92,8 @@ export default {
         userId:'',
         title: '',
         description: '',
-        content: ''
+        content: '',
+        label:'',
       },
       rules: {
         title: [
@@ -110,8 +111,19 @@ export default {
   },
   methods: {
     chooseTag(e,index){
-      this.tags[index].ifChosen = !this.tags[index].ifChosen;
-      this.tagChoice.push(this.tags[index].id)
+      if(this.tags[index].ifChosen){
+        this.tags[index].ifChosen = !this.tags[index].ifChosen;
+        for(let i = 0;i<this.tagChoice.length;i++){
+          console.log(this.tagChoice[i] === this.tags[index].id)
+          if(this.tagChoice[i] === this.tags[index].id){
+            this.tagChoice.splice(i,1)
+            break
+          }
+        }
+      }else {
+        this.tags[index].ifChosen = !this.tags[index].ifChosen;
+        this.tagChoice.push(this.tags[index].id)
+      }
       console.log(this.tagChoice)
       let target = e.target;
       if(target.nodeName === "I"||target.nodeName === "svg"){
@@ -124,6 +136,8 @@ export default {
         if (valid) {
           console.log(this.ruleForm)
           this.ruleForm.label = this.tagChoice
+          if(this.ruleForm.description.length>=24)
+            this.ruleForm.description=this.ruleForm.description.slice(0,parseInt(this.ruleForm.description.length/2))+'\n'+this.ruleForm.description.slice(parseInt(this.ruleForm.description.length/2),parseInt(this.ruleForm.description.length))
           request.post('http://localhost:8081/blog/edit', this.ruleForm).then(res => {
             console.log(res)
             this.$alert('操作成功', '提示', {
@@ -150,8 +164,6 @@ export default {
     let blogId = this.data.blogId
     this.user = this.data.user
     this.ruleForm.userId = this.user.id
-    console.log(this.ruleForm.userId)
-
     if(blogId){
       this.ifNew = false;
     }
@@ -170,6 +182,13 @@ export default {
         this.ruleForm.title = blog.title
         this.ruleForm.description = blog.description
         this.ruleForm.content = blog.content
+        this.tagChoice = JSON.parse(blog.label)
+        if(this.ruleForm.description.length>=25)
+          if(this.ruleForm.description[parseInt((this.ruleForm.description.length-1)/2)] === '\n'){
+            this.ruleForm.description=this.ruleForm.description.slice(0,parseInt((this.ruleForm.description.length-1)/2))+this.ruleForm.description.slice(parseInt((this.ruleForm.description.length-1)/2+1),parseInt(this.ruleForm.description.length))
+          }
+        console.log(blog.description)
+        console.log(this.ruleForm.description)
         blog.label = JSON.parse(blog.label)
         for(let i = 0;i<this.tags.length;i++){
           for(let j = 0;j<blog.label.length;j++){

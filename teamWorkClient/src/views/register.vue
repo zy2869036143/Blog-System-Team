@@ -257,7 +257,7 @@ export default {
           $('wrapper').addClass('form-success');
           setTimeout(()=>{
             this.$router.push("/login");
-          },1500)
+          },2000)
 
         }else{
           this.$message({

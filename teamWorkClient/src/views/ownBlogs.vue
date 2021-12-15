@@ -5,10 +5,25 @@
 
       <el-timeline-item :timestamp="blog.created" placement="top" v-for="blog in blogs" :key="blog.id">
         <el-card @click.native="cardPush(blog)" shadow="hover">
-          <h3>
-              {{blog.title}}
-          </h3>
-          <p>{{blog.description}}</p>
+          <el-row>
+            <div style="float: left">
+              <h3>
+                {{blog.title}}
+              </h3>
+              <p>{{blog.description}}</p>
+
+            </div>
+
+            <el-popconfirm
+              title="这是一段内容确定删除吗？"
+              style="float: right;margin-top: 25px"
+            >
+              <el-button slot="reference" @click="stopE($event)" type="danger" plain circle icon="el-icon-delete"></el-button>
+            </el-popconfirm>
+            <el-button  @click="edit(blog,$event)" style="float: right;margin-top: 25px;margin-right: 10px" type="primary" plain circle icon="el-icon-view
+"></el-button>
+          </el-row>
+
         </el-card>
       </el-timeline-item>
 
@@ -67,6 +82,10 @@ export default {
 
    },
    methods:{
+    edit(blog,e){
+      e.stopPropagation()
+      this.cardPush(blog)
+    },
      cardPush(blog){
        let pushData = {
          user: this.user,
@@ -74,6 +93,14 @@ export default {
        }
        this.$router.push({path:`/blogDetails/${encodeURIComponent(JSON.stringify(pushData))}`})
      },
+     stopE(e){
+       e.stopPropagation()
+       let target = e.target;
+       if(target.nodeName === "I"||target.nodeName === "svg"){
+         target = e.target.parentNode;
+       }
+       target.blur();
+     }
    }
 }
 </script>

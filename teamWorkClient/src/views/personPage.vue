@@ -24,10 +24,11 @@
             <span>个人资料</span>
           </div>
           <div class="text item">
-            {{'昵称 ：' + user.username }}
-            <div>
-              {{'被关注数 ：'+this.subnum}}
-            </div>
+
+            <el-tag>
+              {{'昵称 ：' + user.username }}
+            </el-tag>
+            <el-tag type="success">{{'粉丝数：'+subnum}}</el-tag>
 
           </div>
         </el-card>
@@ -36,7 +37,7 @@
         <el-main>
           <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-right: 80px">
             <el-tab-pane label="我的动态" name="first">
-              <el-timeline>
+              <el-timeline v-if="haveOwn">
                 <el-timeline-item  placement="top" v-for="blog in blogs" :key="blog.id">
                 <el-card @click.native="cardPush(blog)" shadow="hover">
                   <h2>
@@ -46,10 +47,10 @@
                 </el-card>
               </el-timeline-item>
               </el-timeline>
-
+              <el-empty v-if="!haveOwn"></el-empty>
             </el-tab-pane>
             <el-tab-pane label="我的收藏" name="second">
-              <el-timeline>
+              <el-timeline v-if="haveFavourite">
                 <el-timeline-item placement="top" v-for="blog in fblogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
                     <h3>
@@ -59,22 +60,24 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-
+              <el-empty v-if="!haveFavourite"></el-empty>
             </el-tab-pane>
             <el-tab-pane label="我的关注" name="third">
-              <el-timeline>
+              <el-timeline v-if="haveSub">
                 <el-timeline-item placement="top" v-for="user in subusers" :key="user.id">
                   <el-card @click.native="cardPush1(user)" shadow="hover">
-                    <h4>
+                    <h2>
+                      <i class="el-icon-user"></i>
                       {{user.username}}
-                    </h4>
+                    </h2>
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
+              <el-empty v-if="!haveSub"></el-empty>
 
             </el-tab-pane>
             <el-tab-pane label="点赞过" name="fourth">
-              <el-timeline>
+              <el-timeline v-if="havePraise">
                 <el-timeline-item placement="top" v-for="blog in pblogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
                     <h5>
@@ -84,7 +87,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-
+              <el-empty v-if="!havePraise"></el-empty>
             </el-tab-pane>
           </el-tabs>
         </el-main>
@@ -127,27 +130,38 @@ export default {
           username:''
         }
       ],
-      subnum:''
+      subnum:0,
+      haveSub:false,
+      haveFavourite:false,
+      havePraise:false,
+      haveOwn:false
     }
   },
   created() {
     this.user = JSON.parse(decodeURIComponent(this.$route.params.user))
+    console.log(this.user)
     this.first()
     this.getsubnum()
   },
   methods: {
     getsubnum(){
-      request.post('http://localhost:8081/subscribe/get1usersubscribe?id='+this.user.id).then(res=>{
+      request.post('http://localhost:8081/subscribe/getAllsubscribe').then(res=>{
+        console.log(res)
         if(res.code===200){
           console.log(res.data);
           let data = res.data
-          let i = 0
-          for(i = 0;i<data.length;i++){
-            if(data[i][0].sid === this.user.id){
-              break
-            }
-          }
-          this.subnum = data[i].length
+          // let i = 0
+          // for(i = 0;i<data.length;i++){
+          //   console.log(data[i][0].sid)
+          //   console.log(this.user.id)
+          //   if(data[i][0].sid === this.user.id){
+          //     console.log(i)
+          //     break
+          //   }
+          // }
+          this.subnum = data[this.user.id-1].length
+        }else {
+          this.subnum = 0
         }
       })
     },
@@ -178,6 +192,11 @@ export default {
       request.post("http://localhost:8081/search",postData).then(res1=>{
         if(res1.code === 200){
           this.blogs = res1.data;
+          if(this.blogs.length){
+            this.haveOwn = true
+          }else {
+            this.haveOwn = false
+          }
         }
       })
     },
@@ -187,6 +206,9 @@ export default {
         if(res2.code===200){
           console.log(res2.data)
           this.fblogs=res2.data;
+          this.haveFavourite=true
+        }else{
+          this.haveFavourite = false
         }
       })
     },
@@ -195,6 +217,9 @@ export default {
         if(res3.code===200){
           console.log(res3.data);
           this.subusers = res3.data;
+          this.haveSub = true;
+        }else {
+          this.haveSub = false
         }
       })
 
@@ -207,6 +232,9 @@ export default {
       request.post('http://localhost:8081/blog/getuserpraiseblog?userid='+this.user.id).then(res4=>{
         if(res4.code===200){
           this.pblogs=res4.data;
+          this.havePraise = true
+        }else {
+          this.havePraise = false
         }
       })
     },

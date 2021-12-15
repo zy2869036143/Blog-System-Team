@@ -534,9 +534,6 @@ export default {
         localStorage.setItem('user',this.$route.params.user);
       }
     }
-    console.log(222)
-    console.log(this.user)
-    console.log(this.ifLogin)
     // if(this.user){
     //   this.ifLogin = true
     // }else {

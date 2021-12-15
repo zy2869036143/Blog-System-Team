@@ -23,7 +23,7 @@
           <div class="text item">
             {{'昵称 ：' + user.username }}
             <div>
-              {{'被关注数 ：'+this.getsubnum}}
+              {{'ta的粉丝 ：'+subnum}}
             </div>
           </div>
         </el-card>
@@ -110,17 +110,14 @@ export default {
   },
   methods: {
     getsubnum(){
-      request.post('http://localhost:8081/subscribe/get1usersubscribe?id='+this.user.id).then(res=>{
+      request.post('http://localhost:8081/subscribe/getAllsubscribe').then(res=>{
+        console.log(res)
         if(res.code===200){
           console.log(res.data);
           let data = res.data
-          let i = 0
-          for(i = 0;i<data.length;i++){
-            if(data[i][0].sid === this.user.id){
-              break
-            }
-          }
-          this.subnum = data[i].length
+          this.subnum = data[this.user.id-1].length
+        }else {
+          this.subnum = 0
         }
       })
     },
