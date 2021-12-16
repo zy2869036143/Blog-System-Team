@@ -1,9 +1,9 @@
 <template>
-  <div style="overflow-y: scroll">
-    <el-row >
-    <el-col  span="12" v-for="(searchUser,index) in users" :key="index">
+  <div style="overflow: hidden">
+    <el-row :gutter="20" v-if="users.length !==0">
+    <el-col  :span="12" v-for="(searchUser,index) in users" :key="index">
 
-      <el-card style="margin-bottom: 10px;width: 600px;margin-left: 40px" shadow="hover" @click.native="cardPush(searchUser)">
+      <el-card style="margin-bottom: 10px" shadow="hover" @click.native="cardPush(searchUser)">
         <div>
           <el-tag effect="plain" color="#F2F6FC"><i class="el-icon-user-solid"></i>
             {{searchUser.username}}</el-tag>
@@ -18,7 +18,7 @@
 
     </el-col>
   </el-row>
-
+    <el-empty v-else description="暂无相关用户"></el-empty>
 
   </div>
 
@@ -99,12 +99,12 @@ export default {
       }
       request.post('http://localhost:8081/user/search',postData).then(res=>{
         this.users = res.data;
+        console.log(222)
         console.log(this.users)
 
         request.post("http://localhost:8081/subscribe/getsubscribe?id="+this.user.id).then(res=>{
           if(res.code === 200){
             let subs = res.data
-            console.log(subs)
             for(let i = 0;i<this.users.length;i++){
               for(let j = 0;j<subs.length;j++){
                 if(subs[j].id === this.users[i].id){
@@ -118,162 +118,22 @@ export default {
             this.$forceUpdate();
           }
         })
-        // request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
-        //   if(res1.code === 200){
-        //     let praise = res1.data
-        //     console.log(praise)
-        //     for(let i = 0;i<this.blogs.length;i++){
-        //       for(let j = 0;j<praise.length;j++){
-        //         if(praise[j].pblogid === this.blogs[i].id){
-        //           this.ifLike[i] = true;
-        //           break;
-        //         }else {
-        //           this.ifLike[i] = false;
-        //         }
-        //       }
-        //     }
-        //     this.$forceUpdate()
-        //   }
-        // })
 
-      //   request.post("http://localhost:8081/favorite/getfavoriteinfo?userid="+this.user.id).then(res1=>{
-      //     if(res1.code === 200){
-      //       let favorite = res1.data
-      //       console.log(favorite)
-      //       for(let i = 0;i<this.blogs.length;i++){
-      //         for(let j = 0;j<favorite.length;j++){
-      //           if(favorite[j].fblogid === this.blogs[i].id){
-      //             this.ifFavourite[i] = true;
-      //             break;
-      //           }else {
-      //             this.ifFavourite[i] = false;
-      //           }
-      //         }
-      //       }
-      //       this.$forceUpdate()
-      //     }
-      //   })
       })
 
 
 
     },
     cardPush(user){
-      let pushData = {
-        user: this.user,
-        userName: user.username,
+      if(user.id === this.user.id) {
+        this.$router.push({path: `/personPage/${encodeURIComponent(JSON.stringify(user))}`})
       }
-      this.$router.push({path:`/personPage/${encodeURIComponent(JSON.stringify(pushData))}`})
+      else{
+        this.$router.push({path:`/othersPage/${encodeURIComponent(JSON.stringify(user))}`})
+      }
+
     },
 
-    // like(e,index,blog) {
-    //   e.stopPropagation();
-    //   if(!this.ifLike[index]){
-    //
-    //     let data = {
-    //       pid: this.user.id,
-    //       pblogid: blog.id,
-    //     }
-    //     this.ifLike[index] = !this.ifLike[index]
-    //     console.log(data)
-    //     request.post("http://localhost:8081/praise/addpraiseinfo",data).then(res=>{
-    //       console.log(res.code)
-    //       if(res.code === 200){
-    //         let temp = blog;
-    //         temp.created = '';
-    //         console.log(temp)
-    //         request.post("http://localhost:8081/blog/addpraisenum",temp).then(res1=>{
-    //           if(res1.code === 200){
-    //             blog.praise = blog.praise+1
-    //           }
-    //         })
-    //
-    //       }
-    //     })
-    //   }
-    //   else{
-    //     let data = {
-    //       pid: this.user.id,
-    //       pblogid: blog.id,
-    //     }
-    //     this.ifLike[index] = !this.ifLike[index]
-    //     console.log(data)
-    //     request.post("http://localhost:8081/praise/delpraiseinfo",data).then(res=>{
-    //       console.log(res.code)
-    //       if(res.code === 200){
-    //         let temp = blog;
-    //         temp.created = '';
-    //         request.post("http://localhost:8081/blog/delpraisenum",temp).then(res1=>{
-    //           if(res1.code === 200){
-    //             blog.praise = blog.praise-1
-    //           }
-    //         })
-    //
-    //       }
-    //     })
-    //   }
-    //   this.$forceUpdate()
-    //   let target = e.target;
-    //   if(target.nodeName === "I"||target.nodeName === "svg"){
-    //     target = e.target.parentNode;
-    //   }
-    //   target.blur();
-    // },
-    //
-    // favourite(e,index,blog) {
-    //   e.stopPropagation();
-    //   if(!this.ifFavourite[index]){
-    //
-    //     let data = {
-    //       fid: this.user.id,
-    //       fblogid: blog.id,
-    //     }
-    //     this.ifFavourite[index] = !this.ifFavourite[index]
-    //     console.log(data)
-    //     request.post("http://localhost:8081/favorite/addfavoriteinfo",data).then(res=>{
-    //       console.log(res.code)
-    //       if(res.code === 200){
-    //         let temp = blog;
-    //         temp.created = '';
-    //         console.log(temp)
-    //         request.post("http://localhost:8081/blog/addfavoritenum",temp).then(res1=>{
-    //           if(res1.code === 200){
-    //             blog.favorite = blog.favorite+1
-    //           }
-    //         })
-    //
-    //       }
-    //     })
-    //   }
-    //   else{
-    //     let data = {
-    //       fid: this.user.id,
-    //       fblogid: blog.id,
-    //     }
-    //     this.ifFavourite[index] = !this.ifFavourite[index]
-    //     console.log(data)
-    //     request.post("http://localhost:8081/favorite/delfavoriteinfo",data).then(res=>{
-    //       console.log(res.code)
-    //       if(res.code === 200){
-    //         let temp = blog;
-    //         temp.created = '';
-    //         request.post("http://localhost:8081/blog/delfavoritenum",temp).then(res1=>{
-    //           if(res1.code === 200){
-    //             blog.favorite = blog.favorite-1
-    //           }
-    //         })
-    //
-    //       }
-    //     })
-    //   }
-    //
-    //   this.$forceUpdate()
-    //   let target = e.target;
-    //   if(target.nodeName === "I"||target.nodeName === "svg"){
-    //     target = e.target.parentNode;
-    //   }
-    //   target.blur();
-    // },
   },
 }
 </script>

@@ -92,7 +92,7 @@ form button {
   background-color: white;
   border: 0;
   padding: 10px 15px;
-  color: #53e3a6;
+  color: #147897;
   border-radius: 3px;
   width: 400px;
   cursor: pointer;
@@ -129,10 +129,10 @@ form input:hover {
 form input:focus {
   background-color: white;
   width: 300px;
-  color: #53e3a6;
+  color: #25a9ec;
 }
 .register_container {
-  background-image: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);;
+  background-image: linear-gradient(to bottom right, #147897 0%, #d0dfe6 100%);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -257,7 +257,7 @@ export default {
           $('wrapper').addClass('form-success');
           setTimeout(()=>{
             this.$router.push("/login");
-          },2000)
+          },1800)
 
         }else{
           this.$message({

@@ -65,7 +65,7 @@
                 </el-card>
               </el-timeline-item>
               </el-timeline>
-              <el-empty v-if="!haveOwn"></el-empty>
+              <el-empty v-if="!haveOwn" description="自己还没发博客哦~"></el-empty>
             </el-tab-pane>
 
 
@@ -84,7 +84,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-              <el-empty v-if="!haveFavourite"></el-empty>
+              <el-empty v-if="!haveFavourite" description="还没收藏东西呢~"></el-empty>
             </el-tab-pane>
 
             <el-tab-pane label="我的关注" name="third">
@@ -102,7 +102,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-              <el-empty v-if="!haveSub"></el-empty>
+              <el-empty v-if="!haveSub" description="你还没关注过别人呢~"></el-empty>
 
             </el-tab-pane>
             <el-tab-pane label="点赞过" name="fourth">
@@ -120,7 +120,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-              <el-empty v-if="!havePraise"></el-empty>
+              <el-empty v-if="!havePraise" description="还没点赞过别人的博客哦~"></el-empty>
             </el-tab-pane>
           </el-tabs>
         </el-main>

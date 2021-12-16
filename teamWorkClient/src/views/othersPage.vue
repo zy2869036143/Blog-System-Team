@@ -21,9 +21,23 @@
             <span>个人资料</span>
           </div>
           <div class="text item">
-            {{'昵称 ：' + user.username }}
-            <div>
-              {{'ta的粉丝 ：'+subnum}}
+            <div style="margin-bottom: 10px">
+              <el-tag>
+                {{'昵称 ：' + user.username }}
+              </el-tag>
+            </div>
+            <div style="margin-bottom: 10px">
+              <el-tag type="info">
+                {{'邮箱 ：' + user.email }}
+              </el-tag>
+            </div>
+            <div style="margin-bottom: 10px" type="danger">
+              <el-tag type="success">{{'粉丝数：'+subnum}}</el-tag>
+            </div>
+            <div style="margin-bottom: 10px">
+              <el-tag style="color: #d953e3">
+                {{'关注：'+yourSubNum }}
+              </el-tag>
             </div>
           </div>
         </el-card>
@@ -32,7 +46,7 @@
         <el-main>
           <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-right: 80px">
             <el-tab-pane label="ta的动态" name="first">
-              <el-timeline>
+              <el-timeline v-if="blogs.length>0">
                 <el-timeline-item  placement="top" v-for="blog in blogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
                     <h2>
@@ -42,7 +56,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-
+              <el-empty v-else description="ta还没发表博客哦~"></el-empty>
             </el-tab-pane>
 
             <el-tab-pane label="ta的关注" name="third">
@@ -55,7 +69,7 @@
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
-              <el-empty v-else></el-empty>
+              <el-empty v-else description="ta还没关注过别人哦~"></el-empty>
 
             </el-tab-pane>
 
@@ -82,8 +96,8 @@ export default {
         description:'',
         created:''
       }],
-      subnum:'',
-
+      subnum:0,
+      yourSubNum:0,
       subusers:[
         {
           username:''
@@ -159,9 +173,11 @@ export default {
         if(res3.code===200){
           console.log(res3.data);
           this.subusers = res3.data;
+          this.yourSubNum = res3.data.length
           this.haveSub = true;
         }else {
           this.subusers = false
+          this.yourSubNum = 0
         }
       })
 

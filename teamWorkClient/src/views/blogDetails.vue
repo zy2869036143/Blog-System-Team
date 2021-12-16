@@ -12,7 +12,8 @@
           </h2>
 
         <h3 style="color: gainsboro;font-size: 10px;margin-top: 10px;margin-bottom: 10px">
-          作者:{{blog.username}}
+          <el-button type="text" style="color: gainsboro" @click="pushOwn($event)">作者:{{blog.username}}</el-button>
+
           <el-tooltip placement="top" effect="dark" content="关注" v-if="!ifSub && !ownBlog">
             <el-button type="warning" icon="el-icon-star-off" plain
                        size="mini" round
@@ -221,6 +222,23 @@ export default {
     }
   },
   methods:{
+    pushOwn(e){
+      e.stopPropagation()
+      if(this.ownBlog){
+        this.$router.push({
+          path:`/personPage/${encodeURIComponent(JSON.stringify(this.user))}`,
+        })
+      }else {
+        console.log(this.blog.userId)
+        request.get("http://localhost:8081/userinfo/getinfo?id="+this.blog.userId).then(res=>{
+          if(res.code === 200){
+            let blogUser = res.data
+            console.log(blogUser)
+            this.$router.push({path:`/othersPage/${encodeURIComponent(JSON.stringify(blogUser))}`})
+          }
+        })
+      }
+    },
     onSub(e){
       e.stopPropagation();
       if(!this.ifLogin){

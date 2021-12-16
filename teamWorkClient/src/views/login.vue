@@ -136,7 +136,7 @@ form input:focus {
   color: #25a9ec;
 }
 .login_container {
-  background-image: linear-gradient(to bottom right, #147897 0%, #d0dfe6 100%);;
+  background-image: linear-gradient(to bottom right, #147897 0%, #d0dfe6 100%);
   width: 100%;
   height: 100%;
   position: fixed;
