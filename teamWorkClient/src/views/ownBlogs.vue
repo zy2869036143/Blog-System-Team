@@ -76,6 +76,7 @@ export default {
        request.post("http://localhost:8081/search",postData).then(res=>{
          if(res.code === 200){
            this.blogs = res.data;
+           this.blogs.reverse()
          }
        })
      }

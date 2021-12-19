@@ -47,7 +47,7 @@
           <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-right: 80px">
             <el-tab-pane label="ta的动态" name="first">
               <el-timeline v-if="blogs.length>0">
-                <el-timeline-item  placement="top" v-for="blog in blogs" :key="blog.id">
+                <el-timeline-item  :timestamp="blog.created" placement="top" v-for="blog in blogs" :key="blog.id">
                   <el-card @click.native="cardPush(blog)" shadow="hover">
                     <h2>
                       {{blog.title}}
@@ -162,6 +162,7 @@ export default {
       request.post("http://localhost:8081/search",postData).then(res1=>{
         if(res1.code === 200){
           this.blogs = res1.data;
+          this.blogs.reverse()
         }
       })
     },

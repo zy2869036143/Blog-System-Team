@@ -37,6 +37,7 @@
       <el-divider></el-divider>
       <div class="markdown-body" v-html="content"></div>
       <el-divider></el-divider>
+      <div style="float: right;font-size: 10px;color: grey;margin-top: 0">发布于：{{blog.created}}</div>
       <el-button circle v-if="!ifLike" icon="el-icon-icon" @click.native="like($event)" size="mini">{{blog.praise}}</el-button>
       <el-button circle v-if="ifLike" type="primary" icon="el-icon-icon-copy" @click.native="like($event)" size="mini">{{blog.praise}}</el-button>
       <el-button circle v-if="!ifFavourite" icon="el-icon-shoucang" @click.native="favourite($event)" size="mini">{{blog.favorite}}</el-button>
@@ -71,6 +72,9 @@
                 <div class="comment-head">
                   <h6 class="comment-name by-author" v-if="comment[0].userId === blog.userId">{{comment[0].username}}</h6>
                   <h6 v-else class="comment-name">{{comment[0].username}}</h6>
+                  <div style="float: right;font-size: 10px;color: grey">
+                    {{comment[0].time}}
+                  </div>
                 </div>
                 <div class="comment-content">
                  {{comment[0].content}}
@@ -92,10 +96,14 @@
                 <!-- Contenedor del Comentario -->
                 <div class="comment-box">
                   <div class="comment-head">
-                    <h6 class="comment-name by-author" v-if="comment[i].userId === blog.userId">{{comment[i].username}}</h6>
-                    <h6 v-else class="comment-name">{{comment[i].username}}</h6>
-                    <h6 v-if="comment[i].followUsername&&comment[i].follow !== comment[0].id"  style="color: #8c939d;font-size: 10px;float: left;margin-right: 10px;margin-top: 34px">回复{{ comment[i].followUsername }}</h6>
+                      <h6 class="comment-name by-author" v-if="comment[i].userId === blog.userId">{{comment[i].username}}</h6>
+                      <h6 v-else class="comment-name">{{comment[i].username}}</h6>
+                      <h6 v-if="comment[i].followUsername&&comment[i].follow !== comment[0].id"  style="color: #8c939d;font-size: 10px;float: left;margin-right: 10px;margin-top: 34px">回复{{ comment[i].followUsername }}</h6>
+                    <div style="float: right;font-size: 10px;color: grey">
+                      {{comment[i].time}}
+                    </div>
                   </div>
+
                   <div class="comment-content">
                     {{comment[i].content}}
                   </div>
@@ -586,6 +594,7 @@ export default {
 
       var result = md.render(this.blog.content)
       this.content = result
+      console.log(this.blog.content)
       // this.ownBlog = (blog.userId === this.$store.getters.getUser.id)
       request.get("http://localhost:8081/praise/getpraiseinfo?userid="+this.user.id).then(res1=>{
         if(res1.code === 200){

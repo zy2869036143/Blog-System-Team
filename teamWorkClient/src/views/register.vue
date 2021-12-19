@@ -245,7 +245,8 @@ export default {
         })
         flag = false;
       }
-      request.post("http://localhost:8081/register",this.form).then(res=>{
+      if(flag)
+        request.post("http://localhost:8081/register",this.form).then(res=>{
         if(res.code === 200){
           this.$message({
             type:"success",

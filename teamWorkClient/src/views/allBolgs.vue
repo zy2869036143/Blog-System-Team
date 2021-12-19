@@ -15,7 +15,7 @@
       <div v-for="(blog,index) in blogs" class="container">
         <div>
           <card @click.native="cardPush(blog)"
-                data-image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fd1fc2cfbd0fad9775e7a394bc97adb0b1d9f6be15807b-j7OsDp_fw658&refer=http%3A%2F%2Fhbimg.b0.upaiyun.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1641138155&t=e23e2c98fdb1def9448caae85ef3a908">
+                :data-image="imageUrl[parseInt(Math.random()*11)]">
             <h1 slot="header">
               {{blog.title}}
             </h1>
@@ -76,6 +76,18 @@ export default {
       user:'',
       ifLogin:false,
       category:'',
+      imageUrl:["https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1a.nipic.com%2F2009-01-06%2F20091617441988_2.jpg&refer=http%3A%2F%2Fpic1a.nipic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=416c0d63f7e60f38019897f75b364ddc",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.soumeitu.com%2Fwp-content%2Fuploads%2F2020%2F07%2F5efd4bc77d65c.jpg&refer=http%3A%2F%2Fwww.soumeitu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=7ce6cf2083b863c7454eb3152fb38270",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2019-12-02%2F5de4deb4e3afc.jpg&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=b1d061eb888f4670027e09cf4dc86408",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1011%2F0G31G05Z0%2F1FG3105Z0-8-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230045&t=43b1ea331d14e764b47e97d978969ac8",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1114%2F0G320103A8%2F200G3103A8-1-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642229936&t=009e0c8708aedff14a2f919b9f23bf66",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F4k%2Fs%2F02%2F210925010003G64-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=76f332818566307ce708cf4bd4d17a31",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2Ftp09%2F210Q6133S9A22-0-lp.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=aeacfff51397344335a293648aaaa936",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052R0140305%2F20052Q40305-6-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230043&t=2b7c92916437b1e4beb468b0c5d5c637",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F53a3c482469c6.jpg%3Fdown&refer=http%3A%2F%2Fpic1.win4000.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230387&t=6bce90fe314c0d238d6763275b7b2926",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.jj20.com%2Fup%2Fallimg%2F1114%2F0G020114924%2F200G0114924-5-1200.jpg&refer=http%3A%2F%2Fpic.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230387&t=d05f7935756bfd89baf25f604ae809cd",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.taopic.com%2Fuploads%2Fallimg%2F110111%2F292-11011103413892.jpg&refer=http%3A%2F%2Fimg.taopic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1642230482&t=38b66854b3df5b0326151fad1a65e990"
+      ]
     }
   },
 
